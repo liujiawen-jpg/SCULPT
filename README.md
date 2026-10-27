@@ -11,7 +11,7 @@ Run the commands below from the repository root after activating the environment
 predicted in a held-out cell line, on a fixed set of shared genes. This benchmark
 does not establish performance on unseen perturbation targets or unmeasured genes.
 
-[中文入口](docs/README_CN.md) · [Data](docs/DATASETS.md) ·
+[Data](docs/DATASETS.md) ·
 [Generic priors](docs/PRIORS.md) · [Protocol](docs/BENCHMARK.md) ·
 [Metrics](docs/METRICS.md) · [Comparison methods](Compared_methods/README.md)
 
