@@ -1,0 +1,34 @@
+{
+  "txpert": {
+    "repository": "https://github.com/valence-labs/TxPert",
+    "commit": "08d82eea86746b044cf7531f4ec8c5f60e1cb73f",
+    "license": "Recursion Non-Commercial End User License Agreement",
+    "license_file": "license.pdf",
+    "import_name": "gspp",
+    "output": "mean_only"
+  },
+  "cpa": {
+    "repository": "https://github.com/theislab/cpa",
+    "commit": "fbd7c0250edc23eff003a10c99655579c53afd63",
+    "license": "BSD-3-Clause (repository LICENSE; pyproject metadata differs)",
+    "license_file": "LICENSE",
+    "import_name": "cpa",
+    "output": "native_gaussian_cloud_censored_at_zero"
+  },
+  "pie": {
+    "repository": "https://github.com/ArcInstitute/pie",
+    "commit": "21a526add9ff3a81b4f962d9b16bbae570052c63",
+    "license": "CC-BY-NC-SA-4.0",
+    "license_file": "LICENSE.md",
+    "import_name": "pie",
+    "output": "mean_only"
+  },
+  "scpilot": {
+    "repository": "https://github.com/yongzhuangliulab/scPILOT",
+    "commit": "ff83e3283f091324107a55f12f6801c4e72dfb05",
+    "license": "MIT",
+    "license_file": "LICENSE",
+    "import_name": "scpilot",
+    "output": "native_signed_cloud"
+  }
+}

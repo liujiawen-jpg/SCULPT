@@ -1,0 +1,101 @@
+{
+  "schema": "txpert_public_MG_J0_mean_only_v1",
+  "method_id": "TxPert_public_MG",
+  "upstream": {
+    "url": "https://github.com/valence-labs/TxPert",
+    "commit": "08d82eea86746b044cf7531f4ec8c5f60e1cb73f",
+    "config": "configs/config-exphormer-mg.yaml",
+    "unmodified_source": true,
+    "unavailable_resources": [
+      "private PxMap and TxMap"
+    ],
+    "graphs": [
+      "STRING v11.5 top20",
+      "GO top50 file, official top20 filtering"
+    ]
+  },
+  "architecture": {
+    "basal": "official BasalMLP 5979->512->64, BatchNorm, LeakyReLU, dropout0.2",
+    "perturbation": "official Exphormer-MG: 4 layers, hidden128, 2 heads, expander degree3, reverse edges, self loops, multihot typed edges",
+    "decoder": "official (basal64 + perturbation64) ->512 BatchNorm LeakyReLU dropout0.2 ->5979",
+    "targets": 1525,
+    "nodes_including_control": 1526,
+    "control_token": -1,
+    "direct_prediction": true,
+    "fixed_source_mean_added": false,
+    "old_task_weights_used": false,
+    "output": "native unconstrained absolute expression mean; no clipping, no generated cloud"
+  },
+  "benchmark": {
+    "folds": [
+      "F1",
+      "F2",
+      "F3",
+      "F4",
+      "F5"
+    ],
+    "seeds": [
+      17,
+      29,
+      43
+    ],
+    "training_conditions_per_epoch": 4116,
+    "targets": 1525,
+    "genes": 5979,
+    "units": "anchor2048_log1p_per10000_v1",
+    "renormalize": false,
+    "split_metadata_only": true,
+    "external_validation_conditions": 256,
+    "internal_validation_conditions_each": 64,
+    "test_requires_convergence_and_frozen_full_predictions": true,
+    "retrospective_environment_holdout": true,
+    "scope": "known perturbation, unseen environment, shared genes"
+  },
+  "data_adaptations": {
+    "public_default_task": "K562 single-cell unseen perturbation",
+    "benchmark_task": "five environment holdouts, same known targets",
+    "control": "matched per environment full pooled E mean, not truncated E-shape mean; replaces native cell-type/batch matched means because benchmark fixes this reference",
+    "target_graph_ids": "audited one-to-one HGNC symbol mapping; ambiguous/missing/duplicate names retain unique stable IDs and learned isolated nodes; no dropped targets",
+    "input_output_axis": "all fixed 5979 genes, no HVG selection",
+    "original_normalization": "public inference preprocessing total4000",
+    "benchmark_normalization": "use frozen totalA2048 per10000 log1p; do not renormalize"
+  },
+  "training": {
+    "task_weights": "fresh for each fold and seed; never warm-start across runs",
+    "objective": "unchanged official model.loss, mse_weight=1; real individual cells, all output genes",
+    "optimizer": "AdamW",
+    "initial_lr": 0.001,
+    "weight_decay": 0,
+    "batch_size_cells": 64,
+    "precision": "float32; no AMP; TF32 disabled",
+    "epoch": "64 cells sampled uniformly with replacement per permitted condition, plus64 control cells per train environment; globally shuffle cell examples",
+    "optimizer_steps_per_epoch": 4119,
+    "cell_examples_per_epoch": 263616,
+    "graph_backward": "full official graph recomputed with autograd every minibatch; no frozen graph embeddings",
+    "validation_every_epochs": 2,
+    "minimum_epochs": 10,
+    "minimum_steps": 1500,
+    "selection": "lowest finite weighted native real-cell MSE; environment weights external1/2, internal1/6 each; all nonzero validated epochs eligible",
+    "significant_improvement": 1e-05,
+    "convergence": "6 non-improving checks after minimum budget; last LR reduction at least2 epochs earlier",
+    "lr_policy": "halve after2 and4 non-improving eligible checks, min1e-6; explicit benchmark wrapper policy",
+    "initial_max_epochs": 60,
+    "automatic_extension_epochs": 120,
+    "if_not_converged": "needs_decision; no test scoring",
+    "resume": "same fold/seed and method spec only; full model, graph attributes, optimizer and RNG states",
+    "original_training_entrypoint": "not published in official repository; benchmark wrapper trains the official model/loss/optimizer"
+  },
+  "evaluation": {
+    "publication_table": "mean-only table; not eligible for native distribution table",
+    "primary_metrics": "unchanged frozen response_metrics: Rdelta, MSE,MAE,RMSE,Pearson,Spearman,PDS,raw cosine,JAC20/50/100,signedTopK,strong-response NMAE,direction,amplitude; absolute mean MSE/MAE and native cell MSE additionally",
+    "strong_threshold": "q95(abs(training P mean - full E mean)), max .001; training conditions only",
+    "clipping": "none, matching native official decoder; negative prediction fraction reported",
+    "PDS": "raw response cosine, exclude all panel target genes, exact equality midrank; internal metric not official VCC score",
+    "distribution_metrics": null,
+    "distribution_adapter": null,
+    "final_validation": "all1525 external conditions reported only after selection",
+    "final_test": "all1525 test conditions; sealed before own test truth reads",
+    "aggregation": "per fold: mean/sample SD/sample variance over3seeds; overall mean/sample SD/sample variance across5fold means"
+  },
+  "user_distribution_decision": "user requested native mean only if distribution adapter would be custom; no custom distribution generation"
+}

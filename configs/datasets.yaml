@@ -1,0 +1,103 @@
+schema: cosit_dataset_catalog_v1
+verified_on: '2026-10-26'
+axes:
+  genes: axes/primary_genes.tsv
+  targets: axes/targets.tsv
+  anchors: axes/A2048.tsv
+  target_symbols: axes/target_symbols.tsv
+preprocessing:
+  unit: 'log1p(10000*counts/sum_A2048_counts)'
+  cell_cap: 256
+  selection_seed: 17
+  min_cells_per_target: 20
+  min_detected_genes: 200
+  block_rows: 512
+  control_partition: legacy_E_only
+datasets:
+  K562_essential:
+    study: Replogle et al. 2022
+    cell_line: K562
+    format: scperturb_h5ad
+    path: scPerturb/ReplogleWeissman2022_K562_essential.h5ad
+    matrix: X
+    matrix_semantics: raw_counts
+    gene_column: ensembl_id
+    gene_mapping: mappings/K562_essential.tsv
+    target_column: gene_id
+    label_column: perturbation
+    control_label: control
+    license: CC-BY-4.0
+    source_page: https://zenodo.org/records/13350497
+    url: https://zenodo.org/records/13350497/files/ReplogleWeissman2022_K562_essential.h5ad?download=1
+    md5: d8cba17576d1a8afc0f7d71b79cad0f7
+    bytes: 1546729675
+  RPE1:
+    study: Replogle et al. 2022
+    cell_line: RPE1
+    format: scperturb_h5ad
+    path: scPerturb/ReplogleWeissman2022_rpe1.h5ad
+    matrix: X
+    matrix_semantics: raw_counts
+    gene_column: ensembl_id
+    gene_mapping: mappings/RPE1.tsv
+    target_column: gene_id
+    label_column: perturbation
+    control_label: control
+    license: CC-BY-4.0
+    source_page: https://zenodo.org/records/13350497
+    url: https://zenodo.org/records/13350497/files/ReplogleWeissman2022_rpe1.h5ad?download=1
+    md5: cc7f1ec50aeb3a3e1b4a6cfa713d80fa
+    bytes: 1236886900
+  HepG2:
+    study: Nadig et al. 2025 (scPerturb filename retains 2024)
+    cell_line: HepG2
+    format: scperturb_h5ad
+    path: scPerturb/NadigOConner2024_hepg2.h5ad
+    matrix: X
+    matrix_semantics: raw_counts
+    gene_column: ensembl_id
+    gene_mapping: mappings/HepG2.tsv
+    target_column: gene_id
+    label_column: perturbation
+    control_label: control
+    license: CC-BY-4.0
+    source_page: https://zenodo.org/records/13350497
+    url: https://zenodo.org/records/13350497/files/NadigOConner2024_hepg2.h5ad?download=1
+    md5: af2be47f7477cf32fa6e4bec1c6a4868
+    bytes: 850590740
+  Jurkat:
+    study: Nadig et al. 2025 (scPerturb filename retains 2024)
+    cell_line: Jurkat
+    format: scperturb_h5ad
+    path: scPerturb/NadigOConner2024_jurkat.h5ad
+    matrix: X
+    matrix_semantics: raw_counts
+    gene_column: ensembl_id
+    gene_mapping: mappings/Jurkat.tsv
+    target_column: gene_id
+    label_column: perturbation
+    control_label: control
+    license: CC-BY-4.0
+    source_page: https://zenodo.org/records/13350497
+    url: https://zenodo.org/records/13350497/files/NadigOConner2024_jurkat.h5ad?download=1
+    md5: d8b05d00bfbd686d37ffdd4293bc6c8c
+    bytes: 1293665804
+  Orion_HCT116:
+    study: Huang et al. 2025, X-Atlas/Orion
+    cell_line: HCT116
+    format: orion_parquet
+    path: X-Atlas-Orion/data/HCT116_Batch*.parquet
+    gene_metadata: X-Atlas-Orion/metadata/gene_metadata.parquet
+    gene_mapping: mappings/Orion_HCT116.tsv
+    matrix_semantics: raw_counts
+    license: CC-BY-NC-SA-4.0
+    source_page: https://huggingface.co/datasets/Xaira-Therapeutics/X-Atlas-Orion
+    alternate_source: https://doi.org/10.25452/figshare.plus.29190726
+    repository: Xaira-Therapeutics/X-Atlas-Orion
+    revision: 53a5bc98d49247bcf967500292575c3d3602de31
+    allow_patterns:
+      - data/HCT116_Batch*.parquet
+      - metadata/gene_metadata.parquet
+      - README.md
+      - LICENSE.md
+    expected_shards: 109

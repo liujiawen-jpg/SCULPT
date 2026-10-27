@@ -1,0 +1,107 @@
+{
+  "method": "CPA_public_gauss",
+  "official_repository": "https://github.com/theislab/cpa",
+  "official_commit": "fbd7c0250edc23eff003a10c99655579c53afd63",
+  "official_version": "0.8.8",
+  "source_files_unchanged": true,
+  "adaptation": "Official CPAModule and CPATrainingPlan.training_step. Bypass optional plot/tuner imports and logging-only batch R2. No task model/loss replacement.",
+  "runtime_compatibility": {
+    "original": "Python<3.11,torch<=2.0.1,scvi<1",
+    "actual": "Python3.12,torch2.7.1+cu128,scvi-tools1.3.3",
+    "reason": "RTX PRO6000 Blackwell requires modern CUDA kernels",
+    "note": "Runtime compatibility reproduction, not a bitwise reproduction of legacy dependency stack; existing TxPert environment is unchanged."
+  },
+  "architecture": {
+    "n_genes": 5979,
+    "n_perts": 1526,
+    "n_latent": 128,
+    "encoder_hidden": 256,
+    "encoder_layers": 3,
+    "decoder_hidden": 256,
+    "decoder_layers": 3,
+    "recon_loss": "gauss",
+    "variational": false,
+    "doser_type": "logsigm",
+    "covars_encoder": {},
+    "covariate_rationale": "Native covariate-free configuration; background is encoded from observed target controls. No untrained held-cell-line embeddings."
+  },
+  "losses": {
+    "reconstruction": "native -Normal.log_prob(expression).sum(genes).mean(cells)",
+    "adversarial": "official basal-latent perturbation classifier, cross entropy, reg_adv=1, pen_adv=1 gradient penalty, adv_steps=3",
+    "custom_PDS_loss": false,
+    "custom_residual_head": false
+  },
+  "optimization": {
+    "autoencoder_lr": 0.0005,
+    "autoencoder_weight_decay": 1e-06,
+    "doser_lr": 0.0003,
+    "doser_weight_decay": 4e-07,
+    "adversary_lr": 0.0003,
+    "adversary_weight_decay": 4e-07,
+    "batch_cells": 128,
+    "cells_per_condition_per_epoch": 64,
+    "control_cells_per_training_environment_per_epoch": 64,
+    "sampling": "condition balanced, with replacement",
+    "additional_benchmark_lr_plateau_halving_at_bad_checks": [
+      2,
+      4
+    ]
+  },
+  "benchmark": {
+    "folds": [
+      "F1",
+      "F2",
+      "F3",
+      "F4",
+      "F5"
+    ],
+    "seeds": [
+      17,
+      29,
+      43
+    ],
+    "targets": 1525,
+    "genes": 5979,
+    "expression": "anchor2048_log1p_per10000_v1; no further normalization or gene selection",
+    "training_conditions": 4116,
+    "validation": "immutable four environment panels,448 response conditions and80 distribution conditions",
+    "external_weight": 0.5,
+    "internal_each_weight": 0.16666666666666666,
+    "full_test": "1525 target conditions in held environment; distribution for every target",
+    "retrospective_test_track": true
+  },
+  "inference": {
+    "input": "observed target control cells, desired target index, dose1; no target perturbed cells",
+    "output": "512 learned conditional Normal samples, mixed over empirical target control states",
+    "transform": "clamp_min(0) to satisfy nonnegative expression-cloud interface; censored Gaussian output, not NB/ZINB/counts",
+    "cloud_mean": "float64 accumulation of exported cloud, then float32; actual cloud equals reported mean",
+    "diagnostics": [
+      "raw negative sample fraction",
+      "native unconstrained mean with separate response metrics",
+      "native conditional variance"
+    ],
+    "joint_structure": "Diagonal Gaussian conditional on the encoded control; joint covariance comes from the mixture over target-control states. No extra generator added.",
+    "distribution_scope": "native likelihood sampling with disclosed boundary transform, not default CPA.predict mean-only helper",
+    "generation_seed": "sha256(cpa-cloud-v1,run_seed,environment,target); fixed across checkpoints; independent local generator"
+  },
+  "selection": {
+    "objective": "sum fixed environment weights * (R_delta + CRPS_normalized + .25*centered_joint_SW1_normalized)",
+    "metric_geometry": "fresh train-E-only gene scales floor .05, PCA32, KMeans8,128 unit projections seed29",
+    "interval_epochs": 2,
+    "min_epochs": 10,
+    "min_steps": 1500,
+    "patience": 6,
+    "min_delta": 0.002,
+    "max_epochs": 60,
+    "extended_max_epochs": 120,
+    "test_not_opened_until_converged_selected_checkpoint_and_all_test_predictions_sealed": true,
+    "full_external_validation_after_selection": "means1525; distribution32 preregistered external-panel targets; report only,no reselection"
+  },
+  "prohibited_inputs": [
+    "old predictions",
+    "old task weights",
+    "fixed source-mean prediction anchor",
+    "held training-condition labels",
+    "validation/test labels during gradient training"
+  ]
+}

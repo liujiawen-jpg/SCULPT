@@ -1,0 +1,119 @@
+{
+  "method_id": "PIE-native-J0",
+  "official_repository": "https://github.com/ArcInstitute/pie",
+  "official_commit": "21a526add9ff3a81b4f962d9b16bbae570052c63",
+  "official_recipe": "replogle_wdataset / unseen_ctx",
+  "full_architecture": {
+    "d_model": 768,
+    "n_latents": 512,
+    "encoder_blocks": 4,
+    "processor_blocks": 6,
+    "decoder_blocks": 4,
+    "num_heads": 8,
+    "ff_mult": 2,
+    "dropout": 0.1,
+    "drop_src": 0.05
+  },
+  "heads": [
+    "DE binary logits",
+    "continuous log2 fold change",
+    "binned mean expression shift delta_p"
+  ],
+  "native_losses": [
+    "class weighted DE cross entropy",
+    "DE-masked log2FC Huber",
+    "LFC direction hinge",
+    "two-hot delta_p cross entropy"
+  ],
+  "loss_weighting": "official unmodified sum of four terms",
+  "no_added_PDS_loss": true,
+  "optimizer": {
+    "name": "official AdamW",
+    "lr": 0.0001,
+    "weight_decay": 0.01,
+    "betas": [
+      0.9,
+      0.999
+    ],
+    "gradient_clip_norm": 10
+  },
+  "schedule": {
+    "official_optimizer_steps": 5000,
+    "warmup_fraction": 0.05,
+    "constant_steps": 4250,
+    "eta_min": 1e-06
+  },
+  "hardware_adaptation": {
+    "single_gpu": true,
+    "microbatch": 16,
+    "gradient_accumulation": 8,
+    "effective_batch": 128,
+    "original_effective_batch": "2 GPU x 16 x accumulation4=128",
+    "precision": "bf16-mixed"
+  },
+  "knowledge": {
+    "repository": "arcinstitute/PIE_sources",
+    "revision": "fb624a5158a7f37dfa13a015cdacadb985549d26",
+    "sources": [
+      "esm2",
+      "ncbi_text",
+      "string_space",
+      "depmap_gene_effect",
+      "context_text",
+      "perturbation_text"
+    ],
+    "gene_queries": "gene_text / all5979 output genes",
+    "full_ncbi_tokens_retained": true,
+    "missing_perturbation_sources": "official absent-source mask",
+    "random_or_fake_embeddings": false
+  },
+  "preprocessing_adaptation": {
+    "expression_units": "anchor2048_log1p_per10000_v1; original J0 units remain fixed",
+    "differs_from_paper": "Official raw pipeline normalizes by whole-library totals; J0 uses fixed A2048 anchor denominator. Therefore this is an official-model reproduction on the shared J0 benchmark, not identical original-paper raw preprocessing.",
+    "cell_selection": "all observations supplied by the frozen interface per condition, up to256 cached cells, shared with other methods",
+    "delta_p": "mean supplied P_log1p minus full measured pooled E_log1p mean",
+    "FC": "(mean(cellwise_expm1(P))+1e-9)/(mean(cellwise_expm1(E supplied cells))+1e-9)",
+    "DE": "two-sided asymptotic Mann-Whitney U, tie and continuity correction; BH per perturbation over tested genes",
+    "tested_filter": "linear P or E mean >0.05; native 5CPM numeric threshold transplanted to fixed J0 units; not claimed to be identical physical CPM",
+    "untested": "fold_change=0, fdr=1, lfc_true=NaN; delta_p retained for all output genes",
+    "further_normalization_HVG_filtering": false
+  },
+  "inference": {
+    "permitted_inputs": "public frozen knowledge, target measured controls, active-fold training-source observations only",
+    "learned_source_evidence": "official pooled donor/context sufficient statistics; self pair excluded",
+    "held_source_adaptation": "During no_grad inference only, allow same-target source observations from all three active-fold training contexts, including their internal-held conditions, as permitted by common J0 interface. Aggregate with official evidence rules and training-fitted scales/clips.",
+    "training_evidence": "only4116 legal training conditions; no internal-held observations in gradients, negative banks, fitted grids, or evidence scales",
+    "mean_readout": "official argmax delta_p bin centre, then max(full target control mean+delta_p,0)",
+    "no_source_mean_or_old_prediction_added_to_output": true
+  },
+  "initialization": {
+    "task_weights": "fresh independently for every fold and seed",
+    "external_public_generic_embeddings": true,
+    "old_task_checkpoints_or_predictions": false
+  },
+  "checkpoint_selection": {
+    "validation_every_optimizer_steps": 100,
+    "criterion": "maximize official binary_auprc with official equal-context aggregation",
+    "tie_break": "earliest update",
+    "method_specific_selector_allowed_by_contract": true,
+    "validation_labels_only_after_all_predictions_sealed": true
+  },
+  "distribution": {
+    "native_single_cell_generator": false,
+    "cell_clouds_produced": false,
+    "distribution_metrics": null,
+    "reason": "The categorical delta_p head is a discretized mean shift, not a single-cell population distribution. No new control-pushforward adapter is invented."
+  },
+  "reporting": {
+    "primary_mean_metrics": [
+      "PDS_cos",
+      "Pearson_delta",
+      "DEG_AP",
+      "JAC100",
+      "SignedTop100"
+    ],
+    "native_metrics": "all six official PIE metrics also retained",
+    "variance": "average3seeds within fold, then mean and sample variance across5folds; seed variance separately",
+    "test_use": "validation-selected frozen checkpoint once per run; existing benchmark is retrospective"
+  }
+}

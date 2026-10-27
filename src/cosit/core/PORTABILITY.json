@@ -1,0 +1,142 @@
+{
+  "source": "J0 frozen launch 20261014T085801Z",
+  "policy": "No task weights, predictions, response values, or fitted geometry are bundled.",
+  "files": [
+    {
+      "file": "model.py",
+      "source_sha256": "3a0b6eaef7da6a19751d9358bcc14126222d52f681c2b5adaeb6fd2c2bc8950a",
+      "release_sha256": "4e2e59baf09fe2862227d83e9fb1a2986cc58f3cb6ec2f1c75610e58ed92792f",
+      "changes": [
+        "package-relative imports"
+      ]
+    },
+    {
+      "file": "shared_path_model.py",
+      "source_sha256": "072249217ed3f09bc6d27e577b4bf72625de5c253a52289eab720ddb35d911d0",
+      "release_sha256": "059ebf791f63774b6bd086f0707a3d24818cf8dcc3036e9e59ec2bddcbbe33ef",
+      "changes": [
+        "package-relative imports"
+      ]
+    },
+    {
+      "file": "batched_model.py",
+      "source_sha256": "e07284963a896095cd30769bc1052a16c84d71fc5a76e761926aa784c0303fb7",
+      "release_sha256": "06b0014811a71d659ac9d674cbd258a9efe2516f6ba7b72cfc166162eed15bb8",
+      "changes": [
+        "package-relative imports"
+      ]
+    },
+    {
+      "file": "connection.py",
+      "source_sha256": "6925354d34bcbec37f5fba25da89197675ebd4bee4d9165a9913d7c2bb5cfe0b",
+      "release_sha256": "6925354d34bcbec37f5fba25da89197675ebd4bee4d9165a9913d7c2bb5cfe0b",
+      "changes": [
+        "package-relative imports"
+      ]
+    },
+    {
+      "file": "batched_connection.py",
+      "source_sha256": "ce05da9491795b39e46969ff1c7a8d5c120e9bec30f58328fb9835b60514fb05",
+      "release_sha256": "223972cc9410a0fdadd3293a4c6f2fca4140cef0fd9fc9827b7a1e71dda370ee",
+      "changes": [
+        "package-relative imports"
+      ]
+    },
+    {
+      "file": "geometry.py",
+      "source_sha256": "f44d9252951f3fce83984b718579cf20ece7632ba2ed8be3d58e915bcf4491ce",
+      "release_sha256": "06fe84f2d91e82f92af41bb51c24d90a3ccce04444e8f9b3ccf908f49da5f425",
+      "changes": [
+        "package-relative imports",
+        "explicit graph_directory instead of machine-local graph path",
+        "equivalent geometry_from_arrays entry point with explicit aligned graph"
+      ]
+    },
+    {
+      "file": "objective.py",
+      "source_sha256": "617caeb4fa3205891afa83dce62b29a6865270cb46f78c2c24c3ecafb6d8c5f5",
+      "release_sha256": "80e389d98c54240df6564de73abfb208f4992b1540cf720bca7edf88113100ee",
+      "changes": [
+        "package-relative imports"
+      ]
+    },
+    {
+      "file": "ranking.py",
+      "source_sha256": "4dad5e56ca48c7828890500c6e82f5125fb4a1c35af06a6ae09bc523e902590c",
+      "release_sha256": "4dad5e56ca48c7828890500c6e82f5125fb4a1c35af06a6ae09bc523e902590c",
+      "changes": [
+        "package-relative imports"
+      ]
+    },
+    {
+      "file": "rearrangement.py",
+      "source_sha256": "cdb4bf564ee665b1d7704e12ac28b5915269df2502eb1f1cca360a016a1a925c",
+      "release_sha256": "cdb4bf564ee665b1d7704e12ac28b5915269df2502eb1f1cca360a016a1a925c",
+      "changes": [
+        "package-relative imports"
+      ]
+    },
+    {
+      "file": "metrics.py",
+      "source_sha256": "760f06d36cd3b7fc82e0e804d316229173a5e00bc6934aed9efde3f4d67023b1",
+      "release_sha256": "b1ca5ece9cb650ed754b219228ae4213ce5a5b1388c87fdb23a6656547bdde40",
+      "changes": [
+        "package-relative imports",
+        "Explicit allow_signed=False opt-in for evaluating native signed competitor supports; J0 remains strict nonnegative; distance formulas unchanged"
+      ]
+    },
+    {
+      "file": "condition_batching.py",
+      "source_sha256": "f6007d5433a25c0ba04044e8e46e9259c19df9d255dac40a47054ba2ce2d87c9",
+      "release_sha256": "96ce04e287899b7f9a83178596cc4fc3338a6107d5178718ca378a1472b0f5c9",
+      "changes": [
+        "package-relative imports"
+      ]
+    },
+    {
+      "file": "common.py",
+      "source_sha256": "2ff829f3b8c2740f2df2bab078f278d95b9dfa35a2597d68a78dd82d9c4cdc56",
+      "release_sha256": "2ff829f3b8c2740f2df2bab078f278d95b9dfa35a2597d68a78dd82d9c4cdc56",
+      "changes": [
+        "package-relative imports"
+      ]
+    },
+    {
+      "file": "training_support.py",
+      "source_sha256": "b0ce6fbe762e93aa5ec1fd1f323a560c552377eca604e60b41515b59c1e358df",
+      "release_sha256": "5d939e3c16bb9caf99ff8cbee461c65ff89496154b69bfbabcf77fe13f99ad8b",
+      "changes": [
+        "package-relative imports",
+        "extract retained-storage accounting into portable memory.py"
+      ]
+    },
+    {
+      "file": "runtime.py",
+      "source_sha256": "040931ab5f186de6e3b1955c4b49d86801dc2a607f85cc6148695022d8a08a02",
+      "release_sha256": "33db96fce9688833e3a60f080f10c7151fdd48e6e0a4f82d3d71f97dc5696d85",
+      "changes": [
+        "package-relative imports",
+        "explicit portable data stores; no server-local resident_data or fold_assets imports",
+        "same bootstrap, source625, positive fallbacks and authorization retained",
+        "no cross-project observation discovery",
+        "remove optional independent source-mean comparison output (unused by J0 joint model)"
+      ]
+    },
+    {
+      "file": "pooled_reference.py",
+      "source_sha256": "ac757775a87c202c03f53d2664fac9a2547e9a8fe48643af89c0361dfe828243",
+      "release_sha256": "b965bfac0e702da448dc908ccaaafa407a8e33823289e1b6b0b07db9f7d593f3",
+      "changes": [
+        "package-relative imports"
+      ]
+    }
+  ],
+  "extracted_helpers": [
+    {
+      "file": "memory.py",
+      "source_file": "resident_data.py",
+      "source_function": "payload_bytes",
+      "source_sha256": "c9301f021012d4856e7d46eb1f31b0594efa285a1689474ee61a7abc6504d8e0"
+    }
+  ]
+}

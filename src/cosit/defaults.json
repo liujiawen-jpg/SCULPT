@@ -1,0 +1,254 @@
+{
+  "generated_cells_train": 64,
+  "real_cells_train": 64,
+  "generated_cells_eval": 512,
+  "marginal_genes": 768,
+  "joint_projections": 16,
+  "weight_decay": 0.0001,
+  "warmup_updates": 500,
+  "relation_warmup_updates": 40,
+  "relation_ramp_updates": 160,
+  "relation_candidates": 96,
+  "relation_norm_floor": 0.0001,
+  "covariance_prior_strength": 32.0,
+  "checkpoint_interval": 1000,
+  "log_interval": 50,
+  "gradient_clip": 1.0,
+  "frozen_cache_max_bytes": 8589934592,
+  "model": {
+    "prior_dim": 261,
+    "width": 128,
+    "state_rank": 32,
+    "strength": 0.15,
+    "ridge": 0.2,
+    "reorder_max_shift": 0.2
+  },
+  "local_rank": 4,
+  "ambient_dimension": 32,
+  "loss_weights": {
+    "mean_mse": 1.0,
+    "mean_correlation": 0.15,
+    "strong_top100": 0.15,
+    "detection": 0.1,
+    "positive_mean": 0.1,
+    "response_relation": 0.15,
+    "target_rule": 0.1,
+    "source_fit": 0.02,
+    "marginal_W1": 0.5,
+    "variance": 0.1,
+    "positive_shape": 0.1,
+    "centered_joint_SW1": 0.15,
+    "relative_PCA_covariance": 0.05,
+    "rank_penalty": 0.001,
+    "joint_delta": 1.0,
+    "joint_discrimination": 0.25,
+    "joint_marginal": 1.0,
+    "joint_structure": 0.25,
+    "joint_shared": 0.05
+  },
+  "new_relation_candidates": 64,
+  "rank_temperature": 0.05,
+  "query_weight_cap": 3.0,
+  "source_readout_weight": 0.1,
+  "source_readout_detection_weight": 0.1,
+  "schema": "cosit_j0_release_v1",
+  "model_version": "connection_rule_open_zero_joint_v1",
+  "implementation_revision": "joint_abc_balanced_domains_held_condition_v1",
+  "condition_batch_sizes": {
+    "J": 48
+  },
+  "condition_batching": "equal three query-environment loss; homogeneous source subgroups; one optimizer step per effective48",
+  "a_training_means_only": false,
+  "training_progress_unit": "conditions_seen; optimizer_steps counted separately",
+  "learning_rate_batch_scaling": "none",
+  "model_class": "SharedPathModel",
+  "route": "open_zero",
+  "seeds": [
+    17,
+    29,
+    43
+  ],
+  "folds": [
+    {
+      "id": "F1",
+      "train": [
+        "K562_essential",
+        "HepG2",
+        "Orion_HCT116"
+      ],
+      "validation": "RPE1",
+      "test": "Jurkat"
+    },
+    {
+      "id": "F2",
+      "train": [
+        "HepG2",
+        "Jurkat",
+        "Orion_HCT116"
+      ],
+      "validation": "K562_essential",
+      "test": "RPE1"
+    },
+    {
+      "id": "F3",
+      "train": [
+        "RPE1",
+        "Jurkat",
+        "Orion_HCT116"
+      ],
+      "validation": "HepG2",
+      "test": "K562_essential"
+    },
+    {
+      "id": "F4",
+      "train": [
+        "K562_essential",
+        "RPE1",
+        "Jurkat"
+      ],
+      "validation": "Orion_HCT116",
+      "test": "HepG2"
+    },
+    {
+      "id": "F5",
+      "train": [
+        "K562_essential",
+        "RPE1",
+        "HepG2"
+      ],
+      "validation": "Jurkat",
+      "test": "Orion_HCT116"
+    }
+  ],
+  "targets": 1525,
+  "genes": 5979,
+  "phases": [
+    {
+      "name": "J",
+      "min_epochs": 10,
+      "max_epochs": 60,
+      "extended_max_epochs": 120,
+      "patience": 6,
+      "lr_patience": [
+        2,
+        4
+      ],
+      "post_lr_drop_epochs": 2,
+      "min_optimizer_steps": 1500,
+      "min_delta": 0.002,
+      "learning_rate": 0.0002,
+      "scope": "all_task"
+    }
+  ],
+  "validation_conditions": 256,
+  "development_distribution_conditions": 128,
+  "final_distribution_conditions": 1525,
+  "final_validation_candidates": 1,
+  "validation_epoch_points": [
+    2.0
+  ],
+  "validation_every_epochs": 2,
+  "minimum_validation_events": 6,
+  "plateau_relative_delta": 0.005,
+  "ranking_A_metrics": {
+    "R_delta": "min",
+    "PDS_delta": "max",
+    "Pearson": "max",
+    "JAC100": "max"
+  },
+  "ranking_B_metrics": {
+    "marginal_W1_normalized": "min"
+  },
+  "ranking_C_metrics": {
+    "joint_SW1_normalized": "min",
+    "centered_joint_SW1_normalized": "min",
+    "PCA_covariance_relative_frobenius": "min"
+  },
+  "selection": {
+    "J": "minimum fixed multi-environment output objective; exact ties earliest checkpoint",
+    "final": "one selected complete checkpoint; full validation is reporting only; no reselection",
+    "PDS_floor": null
+  },
+  "convergence": {
+    "required_before_test": true,
+    "phase_specific": false,
+    "early_stop": "six eligible two-epoch checks without relative0.2% objective improvement; two LR halvings; min10epochs and1500updates; twoepochs after lastdrop",
+    "resource_cap": "60 epochs then automatic extension to120; hardcap is not convergence",
+    "no_convergence": "needs_decision; no test label access"
+  },
+  "initialization": "fresh all task-specific parameters for every fold and seed",
+  "historical_task_checkpoint_loads": 0,
+  "historical_prediction_inputs": 0,
+  "source_mean_output_anchor": false,
+  "generic_external_priors_allowed": true,
+  "frozen_pilot_architecture": false,
+  "pilot_task_weights_reused": false,
+  "phased_training": "all task modules train together in every optimizer update",
+  "train_sources": "one or two legal training environments excluding query; held conditions never source inputs",
+  "evaluation_sources": "all available training environments except query; held training-condition source use only in sealed evaluation",
+  "pooled_control_reference": "full E mean/detection; capped E shape and higher empirical statistics",
+  "support_semantics": "deterministic quantile cloud; not iid samples",
+  "output_mean": "actual emitted cloud mean; K/N*r audited; p*r diagnostic only",
+  "training_expression_space": "existing audited nonnegative normalized-log expression",
+  "final_test": "all1525conditions/all5979genes/512cells after complete model and prediction seal",
+  "response_metrics": "existing internal metrics; own-target exclusion; PDS raw cosine with panel-target exclusion",
+  "distribution_metrics": "existing all-gene W1/CRPS/raw+centered SW1/detection/variance/quantiles/PCAcov/state",
+  "empirical_truth": "all cells from immutable condition caches; raw pools may exceed cache caps",
+  "retrospective": true,
+  "independent_blind_test_claim": false,
+  "source_count_analysis": "separate prespecified follow-up on frozen models; not used to select primary model",
+  "protocol_changes_after_first_test_forbidden": true,
+  "only_one_gpu": true,
+  "deterministic_algorithms": true,
+  "cublas_workspace_config": ":4096:8",
+  "aggregation": {
+    "primary": "equal five-fold average of within-fold three-seed means",
+    "fold_variance": "sample variance ddof1 across five fold means",
+    "seed_variance": "sample variance ddof1 across three seeds separately per fold",
+    "all15_variance": "descriptive sample variance ddof1; dependent folds not independent replicates",
+    "missing_metrics": "retain null and valid counts; never silently impute zero"
+  },
+  "evaluation_condition_batch_size": 4,
+  "encoding_preparation_batch_size": 32,
+  "cpu_threads": 4,
+  "interop_threads": 1,
+  "decision_only_validation": false,
+  "phase_selection_metrics": "same exact definitions; auxiliary metrics deferred to full candidates and test",
+  "evaluator_reference_cache": "private validation-only cache; every hit checks the current prediction seal",
+  "persistent_fold_worker": true,
+  "persistent_fold_process": true,
+  "a_stopping_composite": true,
+  "shared_fold_data_only": true,
+  "microbatch_per_environment": 16,
+  "joint_training": true,
+  "shared_task_encoding_cache": false,
+  "joint_holdout": {
+    "count_per_training_environment": 153,
+    "seed": 17,
+    "selection": "disjoint target sets chosen by metadata hash; complete condition held from every gradient role"
+  },
+  "joint_validation": {
+    "external_response_conditions": 256,
+    "internal_response_conditions": 64,
+    "external_distribution_conditions": 32,
+    "internal_distribution_conditions": 16,
+    "weights": {
+      "external": 0.5,
+      "internal_each": 0.16666666666666666
+    },
+    "objective": "same fixed output loss groups as training, excluding shared auxiliary loss",
+    "response_mean": "audited quantized512 mean; full512 clouds for distribution subset",
+    "internal_panels": "held conditions of seen training environments; not unseen environments"
+  },
+  "distribution_weight_warmup_epochs": 2,
+  "distribution_weight_warmup_minimum": 0.1,
+  "release": "J0",
+  "execution": {
+    "cpu_threads": 4,
+    "condition_batch_size": 48,
+    "microbatch_size": 16,
+    "workers": 0,
+    "cache_directory": "work/cache",
+    "device": "cuda:0"
+  }
+}

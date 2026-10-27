@@ -1,0 +1,129 @@
+{
+  "schema": "scpilot_j0_full_benchmark_registration_v1",
+  "method_id": "scPILOT-MT-native-OT-Leiden",
+  "official_repository": "https://github.com/yongzhuangliulab/scPILOT",
+  "official_commit": "ff83e3283f091324107a55f12f6801c4e72dfb05",
+  "reproduction_scope": {
+    "native_architecture_losses_optimizers_inference": true,
+    "identical_original_fit_population": false,
+    "fit_population_adaptation": "One shared unconditional native representation per fold/seed, fit over every allowed source perturbation; native inference remains single-target. Original public cell-line example fits IFNGR2 alone.",
+    "query_control_use": "Inference input only; not gradient fitting",
+    "preprocessed_cell_budget": "All fixed benchmark cached rows, up to 256 observed cells per condition; this is not all cells in original h5ad."
+  },
+  "benchmark": {
+    "folds": [
+      "F1",
+      "F2",
+      "F3",
+      "F4",
+      "F5"
+    ],
+    "seeds": [
+      17,
+      29,
+      43
+    ],
+    "runs": 15,
+    "training_conditions_per_run": 4116,
+    "training_control_groups": 3,
+    "targets": 1525,
+    "genes": 5979,
+    "generated_cells": 512,
+    "expression_units": "anchor2048_log1p_per10000_v1",
+    "split_values_used": false,
+    "retrospective_test": true
+  },
+  "network": {
+    "n_hidden": 800,
+    "n_latent": 100,
+    "n_layers": 2,
+    "dropout_rate": 0.2,
+    "use_discriminator": true,
+    "lambd1": 0.2,
+    "lambd2": 1.0,
+    "lambd3": 0.001,
+    "lambd4": 0.05,
+    "eps": 1e-06
+  },
+  "optimization": {
+    "optimizer": "Two official Adam optimizers",
+    "learning_rate": 0.001,
+    "adam_epsilon": 0.01,
+    "weight_decay": 1e-06,
+    "batch_size": 32,
+    "precision": "float32; TF32 disabled",
+    "lr_scheduler": null,
+    "fresh_task_weights_each_fold_seed": true,
+    "historical_predictions_or_task_weights_loaded": false,
+    "epoch": "All authorized cached training cells exactly once, one uniform shuffle. A final singleton is repartitioned as 31+2.",
+    "cell_internal_split": "No added cell holdout; benchmark condition-held/external prediction validation replaces original reconstruction holdout."
+  },
+  "validation": {
+    "every_epochs": 5,
+    "response_conditions": 448,
+    "distribution_conditions": 80,
+    "all_conditions_used": true,
+    "prediction_cells_per_condition": 512,
+    "external_weight": 0.5,
+    "internal_each_weight": 0.16666666666666666,
+    "selection_objective": "fixed environment-weighted (R_delta + CRPS_normalized + .25 * centered_joint_SW1_normalized)",
+    "pds_threshold": null,
+    "test_selection": false,
+    "selection_checkpoint": "Strictly smallest score; exact ties earliest; separate significant-improvement patience clock.",
+    "mmd_computed_for_selection": false
+  },
+  "convergence": {
+    "min_epochs": 30,
+    "min_minibatches": 1500,
+    "max_epochs": 400,
+    "extended_max_epochs": 800,
+    "patience_epochs": 25,
+    "relative_min_delta": 0.002,
+    "at_extended_cap_without_plateau": "needs_decision; do not read test labels"
+  },
+  "inference": {
+    "entrypoint": "Official EGD_model.predict_new",
+    "use_latent_ot": true,
+    "use_leiden": true,
+    "use_adaptive_weighting": true,
+    "sub_key": null,
+    "cov_key": null,
+    "exact_emd_numItermax": 1000000,
+    "source_conditions": "Same target in all other active-fold training environments, using separate inference-only source capability, including frozen internal held conditions",
+    "target_controls": "Independent deterministic bootstrap of legal target E to 512 query cells",
+    "generation_seed": "sha256(scpilot-native|optimization_seed|environment|target)[:4] little endian; fixed across checkpoints",
+    "output": "512 complete native signed cells, 5979 genes; no clipping, Gaussian adapter, repeated mean, or external predictor",
+    "mean": "Exact column mean of the emitted 512-cell cloud; no replacement or output correction"
+  },
+  "evaluation": {
+    "primary_response_metrics": [
+      "PDS_cos",
+      "Pearson_delta",
+      "DEG_AP",
+      "JAC100",
+      "SignedTop100"
+    ],
+    "primary_distribution_metrics": [
+      "marginal_W1_normalized",
+      "joint_SW1_normalized",
+      "centered_joint_SW1_normalized",
+      "MMD2"
+    ],
+    "test_conditions_per_run": 1525,
+    "test_distribution_conditions_per_run": 1525,
+    "target_gene_exclusion": "Frozen response metric definitions; PDS excludes all candidate-panel target genes. Distribution metrics retain all5979genes.",
+    "native_signed_schema_exception": "comparison_native_signed_cloud_v1; signed outputs permitted by distance mathematics, explicitly recorded",
+    "test_label_boundary": "Every final prediction file and checkpoint sealed before any query P read",
+    "geometry": "Only three training E; same frozen modern comparison geometry rules; no query P or held E fits",
+    "MMD": "Unbiased full-gene Gaussian U-statistic; three deterministic subsamples<=128, three bandwidths; negative values retained"
+  },
+  "statistics": {
+    "overall_mean": "Equal five folds after averaging three optimization seeds within each fold",
+    "between_fold_variance": "Sample variance ddof=1 of five fold means",
+    "seed_variance": "Sample variance ddof=1 within each fixed fold, reported separately",
+    "seed_changes_data_split": false
+  },
+  "disclosure_files": [
+    "README.md"
+  ]
+}
