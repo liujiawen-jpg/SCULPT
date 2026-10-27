@@ -1,7 +1,7 @@
-# CoSIT — J0
+# SCULPT
 
-Code for **cross-context perturbation response and single-cell distribution prediction**.
-This repository contains the **J0 model with joint training**. It includes data
+Code for **Cross-Context Single-Cell Perturbation Prediction via Selective Subspace Coupling and Joint Action Inversio**.
+This repository contains the **Code of SCULPT**. It includes data
 preparation, reproducible splits, training to convergence, validation selection,
 prediction, evaluation, and comparison-method configurations.
 
@@ -17,24 +17,7 @@ does not establish performance on unseen perturbation targets or unmeasured gene
 
 ## Model
 
-```text
-Source control + same-target perturbed cells     Target control cells
-                 │                                      │
-       Per-gene response statistics             Target background
-       + sampling precision + joint moments            │
-                 │                                      │
-     Background-dependent observation operators        │
-                 │                                      │
-    Selective STRING connection + local PCA frames      │
-                 │                                      │
-         Joint shared-action inversion ──────────────────┤
-                                                        │
-                              Target-conditioned hurdle readout
-                                         + positive quantile shape
-                                         + learned rank permutation
-                                                        │
-                              512 × 5,979 expression cloud per target
-                              + its actual finite-cloud mean
+
 ```
 
 The fixed generic prior combines **Tahoe gene embeddings, GenePT, and STRING
