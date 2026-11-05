@@ -6,10 +6,7 @@ transferring observed source phenotypes, SCULPT jointly infers a shared
 latent perturbation action from multiple source contexts and
 re-expresses it relative to the target control background.
 
-```{=html}
-<!-- TODO: Replace this path with the final overview/method figure. -->
-```
-![SCULPT overview](fig/SCULPT_overview.pdf)
+[SCULPT overview](fig/SCULPT_overview.pdf)
 
 ## How to run this code
 
