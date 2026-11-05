@@ -76,10 +76,7 @@ detection/positive-expression reference, cell prototypes, and shape
 templates. Source observations inform the inferred action; they are not
 used as a fixed additive prediction anchor.
 
-```{=html}
-<!-- TODO: Replace this path with the final benchmark/results figure, if desired. -->
-```
-![Benchmark results](fig/benchmark_results.pdf)
+[Benchmark results](fig/benchmark_results.pdf)
 
 ## 1. Environment installation
 
@@ -396,10 +393,7 @@ Additional implementation and protocol documentation:
 -   [Comparison-method preprocessing](Compared_methods/PREPROCESSING.md)
 -   [Contributing](CONTRIBUTING.md)
 
-```{=html}
-<!-- TODO: Replace this path with the final interpretability figure (e.g., the subspace-overlap and directional-coupling analyses). -->
-```
-![Interpretability analysis](fig/interpretability_analysis.pdf)
+[Interpretability analysis](fig/interpretability_analysis.pdf)
 
 The interpretability analyses examine principal-subspace overlap on
 STRING edges versus non-edges, the fraction of active directional
