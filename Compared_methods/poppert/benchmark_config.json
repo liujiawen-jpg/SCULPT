@@ -1,0 +1,123 @@
+{
+  "architecture": "Official DistributionTransformer, two-component zero-inflated Gaussian marginals, rank32 Gaussian copula",
+  "benchmark": {
+    "context_split": "entire_environment_holdout",
+    "folds": [
+      "F1",
+      "F2",
+      "F3",
+      "F4",
+      "F5"
+    ],
+    "genes": 5979,
+    "normalization": "anchor2048_log1p_per10000_v1; no new HVG selection or renormalization",
+    "seeds": [
+      17,
+      29,
+      43
+    ],
+    "targets": 1525,
+    "training_conditions_per_fold": 4116,
+    "training_populations_per_fold": 20580,
+    "validation_distribution_conditions": 80,
+    "validation_response_conditions": 448,
+    "vocab_size": 6333
+  },
+  "configuration": {
+    "bfloat16_transformer": true,
+    "copula_lambda": 0.2,
+    "copula_rank": 32,
+    "d_model": 256,
+    "dim_feedforward": 1024,
+    "dropout": 0.1,
+    "effective_batch_size": 16,
+    "evaluation_cells": 512,
+    "gpu_memory_fraction": 0.28,
+    "gradient_clip": 1.0,
+    "lr": 0.0001,
+    "lr_scheduler": "ReduceLROnPlateau_factor0.5_patience3",
+    "max_epochs": 100,
+    "microbatch_size": 16,
+    "minimum_epochs": 20,
+    "n_cell_types": 0,
+    "n_components": 2,
+    "n_samples_loss": 256,
+    "nhead": 4,
+    "num_layers": 4,
+    "optional_pretrained_embeddings": false,
+    "patience": 15,
+    "perturb_mode": "gene",
+    "prediction_clip_max": 14.9,
+    "prediction_clip_min": 0.0,
+    "selector": "fixed_validation_Rdelta_plus_CRPS_plus_0.25_centeredSW1",
+    "truncated": true,
+    "validation_every_epochs": 1,
+    "weight_decay": 0.0001
+  },
+  "inference": {
+    "context": "measured target E marginal params and factor variances",
+    "control_population_choice": "generation_seed(seed,environment,control_population) modulo5; same population for every target in environment",
+    "generated_cells": 512,
+    "optional_context_id_embedding": false,
+    "output": "native copula inverse-CDF samples clipped to[0,14.9] as official inference.py",
+    "reported_mean": "float64 mean of exported cloud then float32"
+  },
+  "losses": {
+    "additional_PDS_loss": false,
+    "dependence": "log factor variance loss with weight0.2",
+    "marginals": "truncated ZI-GMM sampled negative log likelihood",
+    "native": "sampling.compute_loss"
+  },
+  "method": "PopPert-official-ZIGMM-copula",
+  "official_commit": "248fc3e1428de96335bef1d0271d30ca1e4d5565",
+  "official_repository": "https://github.com/whd1125/PopPert",
+  "optimization": {
+    "batch_populations": 16,
+    "control_pairing": "RandomState(seed),uniform among5 same-context populations per example",
+    "distribution_math_precision": "FP32",
+    "gradient_clip": 1.0,
+    "lr": 0.0001,
+    "optimizer": "AdamW",
+    "ordering": "torch.randperm once per epoch",
+    "scheduler": "ReduceLROnPlateau(mode=min,factor=.5,patience=3)",
+    "transformer_precision": "BF16 autocast on CUDA",
+    "weight_decay": 0.0001
+  },
+  "preprocessing": {
+    "control_population_count": 5,
+    "copula_fit_scope": "three legal training environments controls only",
+    "expr_to_gaussian_seed": 0,
+    "gmm_eps": 1e-06,
+    "gmm_min_positive_samples": 10,
+    "gmm_sigma_floor": 0.1,
+    "held_controls": "transform only under frozen train-fit copula",
+    "minimum_observed_cells": 4,
+    "native_module": "gmm_utils.py",
+    "observed_cells_per_condition_max": 256,
+    "population_count": "max(5,floor(n_cells/128))",
+    "population_size": 128,
+    "preprocessing_seed": 42,
+    "sampling": "natural contiguous blocks, then RandomState.choice(replace=n_cells<128)"
+  },
+  "release_scope": "native model/loss/sampler and population helpers; not a complete training CLI",
+  "runtime_numerics": {
+    "bitwise_GPU_reproducibility": false,
+    "parallelism": "independent fold/seed processes; unchanged model/loss/sampling/selection",
+    "reason": "observed small numerical drift in BF16 GPU training"
+  },
+  "selection": {
+    "budget_limit_is_not_claimed_convergence": true,
+    "external_weight": 0.5,
+    "improvement": "strict score decrease",
+    "internal_each_weight": 0.16666666666666666,
+    "interval_epochs": 1,
+    "max_epochs": 100,
+    "min_epochs": 20,
+    "patience": 15,
+    "score": "weighted R_delta+CRPS_normalized+0.25*centered_joint_SW1_normalized",
+    "test_labels_for_selection": false
+  },
+  "source_files_unchanged": true,
+  "upstream_license": "No license selected at pinned revision; upstream source not redistributed",
+  "upstream_source_redistributed": false
+}

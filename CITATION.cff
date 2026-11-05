@@ -1,0 +1,6 @@
+cff-version: 1.2.0
+message: "Anonymous review artifact. Author metadata and the final citation will be supplied after review. Cite external methods and datasets separately."
+title: "SCULPT: Cross-context perturbation response and cell-population distribution prediction"
+type: software
+version: 0.3.0
+license: MIT

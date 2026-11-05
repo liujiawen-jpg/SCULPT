@@ -1,0 +1,117 @@
+{
+  "PCA_fit_scope": "all legal training P and training E cached cells; no held P or held E fit",
+  "configuration": {
+    "after_pool": [
+      1024,
+      1024
+    ],
+    "batch_size": 1024,
+    "condition_dropout": 0.9,
+    "condition_embedding_dim": 256,
+    "constant_noise": 0.5,
+    "context_layers": [
+      256,
+      256
+    ],
+    "decoder": [
+      4096,
+      4096,
+      4096
+    ],
+    "gradient_accumulation": 20,
+    "hidden": [
+      2048,
+      2048,
+      2048
+    ],
+    "learning_rate": 5e-05,
+    "max_iterations": 500000,
+    "min_iterations": 50000,
+    "min_relative_improvement": 0.002,
+    "ode_atol": 1e-05,
+    "ode_rtol": 1e-05,
+    "ode_solver": "Tsit5",
+    "ot_epsilon": 0.5,
+    "output_clip": false,
+    "patience": 6,
+    "pca_dimension": 100,
+    "perturbation_layers": [
+      1024,
+      1024
+    ],
+    "time_encoder": [
+      1024,
+      1024,
+      1024
+    ],
+    "time_freqs": 1024,
+    "validation_frequency": 10000
+  },
+  "context_split": "entire_environment_holdout",
+  "control_context": "full pooled matched-control mean over5979 genes",
+  "external_pretrained_model": false,
+  "folds": [
+    "F1",
+    "F2",
+    "F3",
+    "F4",
+    "F5"
+  ],
+  "fresh_task_training": true,
+  "generated_cells": 512,
+  "genes": 5979,
+  "gradient_accumulation_note": "20 iterations per optimizer update; budgets are iteration budgets",
+  "inference_controls": "512 target E cells with replacement per condition; deterministic native conditional ODE",
+  "known_target_coverage": {
+    "F1": {
+      "test_targets_unseen_in_all_training_contexts": 0,
+      "trained_target_count": 1525
+    },
+    "F2": {
+      "test_targets_unseen_in_all_training_contexts": 0,
+      "trained_target_count": 1525
+    },
+    "F3": {
+      "test_targets_unseen_in_all_training_contexts": 0,
+      "trained_target_count": 1525
+    },
+    "F4": {
+      "test_targets_unseen_in_all_training_contexts": 0,
+      "trained_target_count": 1525
+    },
+    "F5": {
+      "test_targets_unseen_in_all_training_contexts": 0,
+      "trained_target_count": 1525
+    }
+  },
+  "method_adaptations": [
+    "whole-context frozen benchmark split",
+    "control-mean context embedding",
+    "onehot known perturbation embedding",
+    "streaming equal-condition sampler preserving native semantics",
+    "fixed benchmark output checkpoint selector",
+    "streaming train-only exact PCA"
+  ],
+  "method_id": "CellFlow-official-OTFM-control-context",
+  "normalization": "anchor2048_log1p_per10000_v1; no HVG selection or renormalization",
+  "official_commit": "446ed6073c60ac2e8db13c4ea096a43cdec288b2",
+  "official_repository": "https://github.com/theislab/CellFlow",
+  "official_tutorial": "https://cellflow.readthedocs.io/en/stable/notebooks/100_pbmc.html",
+  "old_prediction_anchor": false,
+  "output": "native signed normalized expression from official linear inverse PCA",
+  "perturbation_input_disclosure": "Official PBMC tutorial uses ESM2 cytokine vectors; this genetic known-target task uses officially supported onehot categorical inputs. Network/OTFM/ODE remain upstream.",
+  "release_scope": "native computational helpers and configuration; not a full training CLI",
+  "seeds": [
+    17,
+    29,
+    43
+  ],
+  "selector": "fixed environment weighted R_delta + CRPS_normalized + .25 centered_joint_SW1_normalized",
+  "targets": 1525,
+  "training_conditions_per_fold": 4116,
+  "training_sampler": "Uniform legal condition; independently sample1024 same-context E and P cells with replacement",
+  "upstream_license": "PolyForm-Noncommercial-1.0.0",
+  "upstream_source_redistributed": false,
+  "validation_distribution_conditions": 80,
+  "validation_response_conditions": 448
+}

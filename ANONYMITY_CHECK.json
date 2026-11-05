@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "files_scanned": 181,
+  "issues": [],
+  "reviewed_external_github_owners": [
+    "arcinstitute",
+    "tahoebio",
+    "theislab",
+    "valence-labs",
+    "whd1125",
+    "yiqunchen",
+    "yongzhuangliulab"
+  ],
+  "scope": "source-tree checks; no Git history, host-account or external-service anonymity claim"
+}

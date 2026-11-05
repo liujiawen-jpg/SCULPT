@@ -3,9 +3,9 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "cosit-j0"
-version = "0.1.0"
-description = "Context-specific shared-action inversion for perturbation distribution transfer"
+name = "sculpt-perturbation"
+version = "0.3.0"
+description = "SCULPT: shared-action inversion for cross-context perturbation distribution prediction"
 readme = "README.md"
 requires-python = ">=3.11,<3.13"
 license = {text = "MIT"}
@@ -20,6 +20,7 @@ dependencies = [
 dev = ["pytest>=8,<10", "ruff>=0.8"]
 
 [project.scripts]
+sculpt = "cosit.cli:main"
 cosit = "cosit.cli:main"
 
 [tool.setuptools.packages.find]

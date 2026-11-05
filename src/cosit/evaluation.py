@@ -124,7 +124,14 @@ def evaluate(data,predictions,checkpoint,asset_directory,output,*,device='cpu',e
     """
     directory=Path(asset_directory)
     from .assets import verify_fitted_assets
-    verify_fitted_assets(directory)
+    binding=read_json(directory/'BINDING.json')
+    verify_fitted_assets(directory,binding)
+    # Same gene/target names do not imply the same observations. Bind scoring
+    # to the prepared dataset used to fit these scales and coordinates before
+    # opening predictions, restoring a checkpoint, or authorizing any labels.
+    expected_manifest=binding.get('data_manifest_sha256')
+    if not isinstance(expected_manifest,str) or sha256(Path(data)/'MANIFEST.json')!=expected_manifest:
+        raise PermissionError('Evaluation prepared data differs from the frozen asset binding')
     with h5py.File(predictions,'r') as h:
         if not h.attrs.get('complete'):raise PermissionError('Incomplete predictions')
         method=str(h.attrs.get('method','CoSIT-J0'))

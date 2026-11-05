@@ -2,6 +2,9 @@ include README.md LICENSE environment.yml
 recursive-include configs *.json *.yaml *.tsv
 recursive-include docs *.md
 recursive-include scripts *.py *.sh
-recursive-include Compared_methods *.py *.json *.md *.txt *.sh
+recursive-include Compared_methods *.py *.json *.yaml *.yml *.md *.txt *.sh
 recursive-include tests *.py
 global-exclude __pycache__ *.py[cod]
+include RELEASE_CHECKS.json
+
+include Makefile requirements-core.txt CITATION.cff SOURCE_SHA256SUMS

@@ -1,0 +1,15 @@
+# Tested portable core environment. Install the appropriate torch wheel first.
+# GPU: python -m pip install torch==2.7.1 --index-url https://download.pytorch.org/whl/cu128
+# CPU: python -m pip install torch==2.7.1 --index-url https://download.pytorch.org/whl/cpu
+numpy==1.26.4
+scipy==1.15.2
+scikit-learn==1.5.2
+h5py==3.13.0
+pandas==2.2.3
+anndata==0.11.4
+pyarrow==19.0.1
+PyYAML==6.0.2
+safetensors==0.8.0
+requests==2.32.3
+huggingface-hub==1.29.0
+pytest==8.3.5

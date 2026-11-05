@@ -1,7 +1,10 @@
 # SCULPT
 
-Code for **Cross-Context Single-Cell Perturbation Prediction via Selective Subspace Coupling and Joint Action Inversio**.
-This repository contains the **Code of SCULPT**. It includes data
+**Anonymous review source release**
+
+Code for **cross-context perturbation response and single-cell distribution prediction**.
+This repository contains the **J0 model with joint training**, named SCULPT in the manuscript.
+The `cosit` Python namespace and checkpoint schema are retained for compatibility. It includes data
 preparation, reproducible splits, training to convergence, validation selection,
 prediction, evaluation, and comparison-method configurations.
 
@@ -11,13 +14,30 @@ Run the commands below from the repository root after activating the environment
 predicted in a held-out cell line, on a fixed set of shared genes. This benchmark
 does not establish performance on unseen perturbation targets or unmeasured genes.
 
-[Data](docs/DATASETS.md) ·
+[Quick reproduction checklist](docs/REPRODUCTION_CHECKLIST.md) · [中文入口](docs/README_CN.md) · [Data](docs/DATASETS.md) ·
 [Generic priors](docs/PRIORS.md) · [Protocol](docs/BENCHMARK.md) ·
 [Metrics](docs/METRICS.md) · [Comparison methods](Compared_methods/README.md)
 
 ## Model
 
-
+```text
+Source control + same-target perturbed cells     Target control cells
+                 │                                      │
+       Per-gene response statistics             Target background
+       + sampling precision + joint moments            │
+                 │                                      │
+     Background-dependent observation operators        │
+                 │                                      │
+    Selective STRING connection + local PCA frames      │
+                 │                                      │
+         Joint shared-action inversion ──────────────────┤
+                                                        │
+                              Target-conditioned hurdle readout
+                                         + positive quantile shape
+                                         + learned rank permutation
+                                                        │
+                              512 × 5,979 expression cloud per target
+                              + its actual finite-cloud mean
 ```
 
 The fixed generic prior combines **Tahoe gene embeddings, GenePT, and STRING
@@ -43,7 +63,7 @@ configs/
   axes/                     Public gene/target/normalization identifiers
   mappings/                 Fixed identifier mappings; no expression measurements
   splits/F1 ... F5/         Frozen metadata-only benchmark partitions
-Compared_methods/           TxPert, CPA, PIE and scPILOT configurations/adapters
+Compared_methods/           Seven learned comparators and two no-training baselines
 scripts/                    Download, prior preparation and benchmark entrypoints
 tests/                      CPU synthetic, invariance and leakage checks
 docs/                       Detailed protocol and implementation notes
@@ -55,23 +75,25 @@ are necessary public metadata, not expression data.
 
 ## 1. Environment
 
-Use Python **3.11**. For CUDA 12.8-compatible GPUs:
+Use Python **3.12** for the tested portable core environment. For CUDA 12.8-compatible GPUs:
 
 ```bash
 conda env create -f environment.yml
-conda activate cosit-j0
+conda activate sculpt
 python -m pip install torch==2.7.1 --index-url https://download.pytorch.org/whl/cu128
 python -m pip install -e '.[dev]'
 ```
 
-Alternatively, create a Python 3.11 virtual environment and install the PyTorch
+Alternatively, create a Python 3.12 virtual environment and install the PyTorch
 wheel followed by `python -m pip install -e '.[dev]'`. The wheel must match your
 GPU/driver; see the [official PyTorch installation options](https://pytorch.org/get-started/previous-versions/).
 For a CPU installation, replace the wheel index with
 `https://download.pytorch.org/whl/cpu`.
 
-The release was checked with Python 3.11.13, PyTorch 2.7.1, NumPy 2.2.6,
-SciPy 1.17.1, scikit-learn 1.9.0 and h5py 3.16.0. Formal training uses one CUDA
+This source snapshot was tested with Python 3.12.14, PyTorch 2.7.1, NumPy 1.26.4,
+SciPy 1.15.2, scikit-learn 1.5.2 and h5py 3.13.0. Exact core pins are in
+`requirements-core.txt`. Comparator runtimes remain separate and use their
+registered per-method dependencies. Formal training uses one CUDA
 device at a time. CPU is supported for the synthetic checks; no full-benchmark
 CPU runtime is claimed. Lower `execution.microbatch_size` in the configuration
 to reduce peak GPU memory while preserving the effective balanced batch.
@@ -142,7 +164,10 @@ python scripts/prepare_priors.py string --help
 python scripts/prepare_priors.py prior --help
 ```
 
-The guide provides complete commands and expected filenames. The resulting
+Preview the automated public-resource download plan with
+`python scripts/download_resources.py --dry-run`. The downloader pins the Tahoe
+revision and verifies registered STRING/Tahoe hashes; HGNC must be explicitly
+pinned. The guide provides complete commands and expected filenames. The resulting
 inputs used below are:
 
 ```text
@@ -260,24 +285,33 @@ not receive invented distribution scores.
 ## Comparison methods
 
 [`Compared_methods/`](Compared_methods/README.md) contains the registered
-**TxPert, CPA, PIE and scPILOT** configurations, pinned official commits,
+**TxPert, CPA, PIE, scPILOT, STATE, CellFlow and PopPert** configurations, pinned official commits,
 environment setup, legal training-data export and native prediction bridges.
 Upstream code is fetched on request rather than copied into this repository.
 
-TxPert and PIE are mean-only in the registered configuration. CPA and scPILOT
-have distribution outputs, with their benchmark boundary adaptations explicitly
-documented. The directory distinguishes official APIs from our benchmark
-adapters; it does not claim that a generic script faithfully replaces all four
+TxPert, PIE and Source-Mean are mean-only in the registered configuration.
+CPA, scPILOT, STATE, CellFlow, PopPert and Target-Control have distribution
+outputs, with their benchmark adaptations explicitly documented. Source-Mean
+uses equal-weight means of the source **absolute perturbed expressions**, not
+source response differences. The two simple baselines run once per fold. The directory distinguishes official APIs from our benchmark
+adapters; it does not claim that a generic script faithfully replaces the seven
 native training pipelines. See each method's guide and license.
+
+Native-label/population preparation commands are collected in
+[Compared_methods/PREPROCESSING.md](Compared_methods/PREPROCESSING.md).
+These include PIE native labels, PopPert training-only copula/populations and
+CellFlow training-only PCA; they do not open held-out perturbation labels.
 
 ## Reproducibility and license
 
 - [Implementation provenance and validation limits](docs/REPRODUCIBILITY.md)
+- [J0 fidelity audit](docs/J0_FIDELITY.md)
+- [Anonymous packaging and release checks](docs/ANONYMOUS_RELEASE.md)
 - [Benchmark and access protocol](docs/BENCHMARK.md)
 - [Prediction schema](docs/INTERFACE.md)
 - [Contributing](CONTRIBUTING.md)
 
-The original CoSIT code is [MIT licensed](LICENSE). External data, pretrained
+The original SCULPT code is [MIT licensed](LICENSE). External data, pretrained
 resources and official comparison implementations retain their own licenses.
 This repository is a portable source release: synthetic end-to-end checks and
 core equivalence were verified; a new full 15-run benchmark was **not** performed

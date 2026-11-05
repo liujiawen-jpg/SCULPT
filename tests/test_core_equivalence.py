@@ -111,3 +111,67 @@ def test_precision_bootstrap_uses_analytic_mean_and_detection_uncertainty():
     np.testing.assert_allclose(variance[:,0],x.var(0,ddof=1)/len(x),rtol=1e-6)
     rate=((x>0).sum(0)+.5)/(len(x)+1)
     np.testing.assert_allclose(variance[:,2],rate*(1-rate)/(len(x)+1),rtol=1e-6)
+
+
+def test_implicit_connection_solution_and_gradients_match_dense_energy():
+    """Compare matrix-free inference to an independently assembled SPD system.
+
+    This checks numerical answers and implicit derivatives, not only agreement
+    between two implementations that share the same matrix-free helper.
+    """
+    from cosit.core.batched_connection import BatchedConnectionInference
+    torch.manual_seed(121)
+    torch.set_num_threads(1)
+    q, s, g, m, d = 2, 2, 4, 3, 2
+    geometry = dict(
+        bases=torch.randn(g, 3, d), edge_src=torch.tensor([0, 1, 2]),
+        edge_dst=torch.tensor([1, 2, 3]), left=torch.randn(3, d, d),
+        right=torch.randn(3, d, d), weight=torch.rand(3, d) + .2)
+    solver = BatchedConnectionInference(geometry, strength=.15, ridge=.2,
+        tolerance=1e-11, max_steps=100).double()
+    a = torch.randn(q, s, g, m, d, dtype=torch.float64, requires_grad=True)
+    y = torch.randn(q, s, g, m, dtype=torch.float64, requires_grad=True)
+    precision = (torch.rand(q, s, g, m, dtype=torch.float64) + .2).requires_grad_()
+    prior = torch.randn(q, g, d, dtype=torch.float64, requires_grad=True)
+    actual = solver.forward_conditions(a, y, precision, prior)['rule']
+
+    # Form a rectangular edge constraint matrix without calling graph helpers.
+    k = torch.zeros(len(solver.edge_src) * d, g * d, dtype=torch.float64)
+    for edge, (left_gene, right_gene) in enumerate(zip(solver.edge_src, solver.edge_dst)):
+        k[edge*d:(edge+1)*d, left_gene*d:(left_gene+1)*d] = solver.left[edge]
+        k[edge*d:(edge+1)*d, right_gene*d:(right_gene+1)*d] = -solver.right[edge]
+    graph_hessian = k.T @ torch.diag(solver.weight.flatten()) @ k
+    expected = []
+    for condition in range(q):
+        blocks, rhs = [], []
+        for gene in range(g):
+            operator = a[condition, :, gene].reshape(s*m, d)
+            observations = y[condition, :, gene].reshape(-1)
+            w = torch.diag(precision[condition, :, gene].reshape(-1))
+            blocks.append(operator.T @ w @ operator + solver.ridge * torch.eye(d, dtype=torch.float64))
+            rhs.append(operator.T @ w @ observations + solver.ridge * prior[condition, gene])
+        hessian = torch.block_diag(*blocks) + solver.strength * graph_hessian
+        expected.append(torch.linalg.solve(hessian, torch.cat(rhs)).reshape(g, d))
+    expected = torch.stack(expected)
+    torch.testing.assert_close(actual, expected, rtol=2e-8, atol=2e-9)
+    probe = torch.randn_like(actual)
+    variables = (a, y, precision, prior)
+    derivatives = torch.autograd.grad((actual * probe).sum(), variables, retain_graph=True)
+    references = torch.autograd.grad((expected * probe).sum(), variables)
+    for derivative, reference in zip(derivatives, references):
+        torch.testing.assert_close(derivative, reference, rtol=3e-8, atol=3e-9)
+
+
+def test_conditions_are_not_mixed_in_batched_predictions(scientific_case):
+    """A different condition's source observations cannot alter this query."""
+    _, batch, model = scientific_case
+    model.eval()
+    altered = {key: value.clone() for key, value in batch.items()}
+    altered['observations'][1] += .35
+    altered['target_prior'][1] *= 1.7
+    with torch.no_grad():
+        before = model.forward_conditions(batch)
+        after = model.forward_conditions(altered)
+    for key in ('rule', 'p', 'r', 'support', 'mean512_st'):
+        torch.testing.assert_close(before[key][0], after[key][0], atol=0, rtol=0)
+    assert not torch.equal(before['rule'][1], after['rule'][1])

@@ -1,7 +1,8 @@
 # Compared methods
 
 This directory records the **actual registered configurations** used for the
-J0 comparison: five fixed context folds and initialization seeds 17, 29, and 43.
+SCULPT/J0 comparison: five fixed context folds and initialization seeds 17, 29, and 43
+for learned methods. Target-Control and Source-Mean run once per fold.
 It contains configuration files and our small integration helpers. Official
 third-party source, pretrained weights, cell data, and experimental outputs are
 not redistributed here.
@@ -14,21 +15,29 @@ not redistributed here.
 | CPA 0.8.8 | [theislab/cpa](https://github.com/theislab/cpa/tree/fbd7c0250edc23eff003a10c99655579c53afd63) | Native conditional Gaussian cell cloud; disclosed censoring at zero | Repository LICENSE: BSD-3-Clause; package metadata says MIT |
 | PIE | [ArcInstitute/pie](https://github.com/ArcInstitute/pie/tree/21a526add9ff3a81b4f962d9b16bbae570052c63) | Absolute expression mean | CC-BY-NC-SA-4.0 |
 | scPILOT | [yongzhuangliulab/scPILOT](https://github.com/yongzhuangliulab/scPILOT/tree/ff83e3283f091324107a55f12f6801c4e72dfb05) | Native signed cell cloud from latent OT, Leiden, and adaptive weighting | MIT |
+| STATE | [ArcInstitute/state](https://github.com/ArcInstitute/state/tree/9bbfe78a434a55205e4de834e1ea99f85f7a3add) | Native ReLU cell-set prediction | CC-BY-NC-SA-4.0 |
+| CellFlow | [theislab/CellFlow](https://github.com/theislab/CellFlow/tree/446ed6073c60ac2e8db13c4ea096a43cdec288b2) | Native flow samples, inverse-PCA expression cloud | PolyForm Noncommercial |
+| PopPert | [whd1125/PopPert](https://github.com/whd1125/PopPert/tree/248fc3e1428de96335bef1d0271d30ca1e4d5565) | ZIGMM marginals and low-rank Gaussian-copula cloud | No license chosen upstream; implementation not redistributed |
+| Source-Mean | Built-in deterministic baseline | Mean of source absolute perturbed expressions; **mean only** | This repository |
+| Target-Control | Built-in deterministic baseline | Full control mean for response; empirical control population for distribution | This repository |
 
-The CoSIT repository license does not replace these independent upstream
+The SCULPT repository license does not replace these independent upstream
 licenses. Read each downloaded license before using its implementation.
 TxPert's public MG model contains STRING and GO; the proprietary PxMap and
 TxMap resources are unavailable and are not claimed to be reproduced.
 
 ## 1. Download official code into a separate working directory
 
-Run from the CoSIT repository root:
+Run from the repository root:
 
 ```bash
 python Compared_methods/prepare.py txpert --directory external/TxPert
 python Compared_methods/prepare.py cpa --directory external/CPA
 python Compared_methods/prepare.py pie --directory external/PIE
 python Compared_methods/prepare.py scpilot --directory external/scPILOT
+python Compared_methods/prepare.py state --directory external/state
+python Compared_methods/prepare.py cellflow --directory external/CellFlow
+python Compared_methods/prepare.py poppert --directory external/PopPert
 ```
 
 This checks out exactly the commits in `registry.json`. It does not install,
@@ -36,7 +45,7 @@ train, fetch weights, stop jobs, or overwrite an existing different checkout.
 Keep each method in its **own environment**. Installation instructions are in
 the corresponding pinned official README. In particular:
 
-The supplied installation scripts recreate the registered modern computational
+The four original installation scripts below recreate their registered computational
 runtime, require Python 3.12, and refuse to modify an existing environment:
 
 ```bash
@@ -49,9 +58,9 @@ bash Compared_methods/scpilot/install.sh external/scPILOT work/envs/scpilot
 They use CUDA 12.8 PyTorch wheels and expect a compatible NVIDIA driver. Install
 the main CoSIT package in its own environment for common input export and
 evaluation. The comparison helpers can be imported from the repository root;
-the four third-party packages remain isolated from CoSIT dependencies. These
+the third-party packages remain isolated from CoSIT dependencies. These
 scripts are versioned environment recipes; the release smoke test does not
-reinstall four GPU environments or retrain the comparison methods.
+reinstall the GPU environments or retrain the comparison methods.
 
 - TxPert's pinned project targets Python 3.12 and PyTorch 2.6.0. The benchmark
   used PyTorch 2.7.1/CUDA 12.8 for Blackwell compatibility. This is an explicitly
@@ -65,6 +74,24 @@ reinstall four GPU environments or retrain the comparison methods.
   resolver and CUDA instructions; its requirements differ from CoSIT's.
 - scPILOT additionally needs POT, Leiden/igraph, anndata, scanpy,
   and Lightning. The registered training uses full float32 without TF32.
+
+### Added methods and no-training baselines
+
+Use the per-method guides for complete environment commands and native inputs:
+
+- [STATE](state/README.md): exact Transformer and set-loss configuration, native helper and pinned source checks.
+- [CellFlow](cellflow/README.md): separate JAX environment, training-only PCA, target-control condition inputs and flow sampling.
+- [PopPert](poppert/README.md): separate PyTorch environment, distribution preprocessing, native likelihood and copula sampling.
+- [Target-Control / Source-Mean](naive_baselines/README.md): executable frozen-input generation and evaluation; no model optimization and no three-seed replication.
+
+The three added learned methods include native computational helpers and the
+actual benchmark configurations, **not complete portable benchmark training
+controllers**. Their method-specific data-loading, stopping and selection
+controllers must follow the documented recipes. The complete SCULPT training,
+prediction and evaluation CLI is in `src/cosit`; do not confuse those two scopes.
+No new comparison training is claimed as part of packaging.
+
+Method-specific preparation CLI and exact commands are in [PREPROCESSING.md](PREPROCESSING.md).
 
 ## 2. Reuse the exact data/split protocol
 
@@ -120,7 +147,7 @@ adaptation**, not a claim of using identical original-paper preprocessing:
 
 ## 3. Native computational helpers
 
-These are small callable integrations, **not four fully ported training CLIs**:
+These are small callable integrations, **not fully ported training CLIs for all methods**:
 
 - `txpert/native_api.py`: builds the unchanged public MG model, performs the
   vectorized native evaluation forward, and explicitly checkpoints graph
@@ -179,7 +206,7 @@ python Compared_methods/convert_predictions.py \
   --checkpoint work/PIE/F1/seed17/selected.ckpt
 ```
 
-For CPA/scPILOT additionally provide `--support-semantics iid_samples` (the
+For CPA/scPILOT/STATE/CellFlow/PopPert additionally provide `--support-semantics iid_samples` (the
 native scPILOT posterior/bootstrap cloud) and use the appropriate `--method`.
 The converter verifies axis dimensions, finiteness, the 512-cell budget and
 cloud/mean agreement; records checkpoint and export SHA-256; and seals the
@@ -206,6 +233,14 @@ scPILOT outputs when computing distances rather than censoring them silently.
 
 ## 5. Statistics
 
+Target-Control and Source-Mean have one deterministic result per fold. Their
+uncertainty is computed over five fold values; do not manufacture three identical
+seed results. Source-Mean is an arithmetic mean of **absolute source expressions**,
+not response deltas and not a population mixture. Target-Control preserves its
+full pooled control mean for response scores and empirical whole-cell support
+for distribution scores; its dedicated adapter records why those means can differ.
+
+For learned methods: 
 Average the three seeds **within each context fold**, then report the equal
 five-fold mean and the sample variance/standard deviation (`ddof=1`) of the
 five context means. Also report seed variability separately. Fifteen runs are

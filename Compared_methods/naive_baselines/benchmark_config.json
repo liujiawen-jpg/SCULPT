@@ -1,0 +1,36 @@
+{
+  "schema": "parameter_free_baselines_v1",
+  "methods": [
+    "target_control",
+    "source_mean"
+  ],
+  "folds": [
+    "F1",
+    "F2",
+    "F3",
+    "F4",
+    "F5"
+  ],
+  "seeds": [],
+  "runs_per_method_fold": 1,
+  "training": false,
+  "checkpoint_selection": false,
+  "genes": 5979,
+  "targets": 1525,
+  "expression_units": "anchor2048_log1p_per10000_v1",
+  "target_control": {
+    "response": "immutable full-pooled target-control expression mean",
+    "distribution": "512 unchanged target-control rows selected by floor((2*i+1)*N/(2*512))",
+    "finite_support_mean": "stored separately; no centering/rescaling to force equality"
+  },
+  "source_mean": {
+    "response": "equal arithmetic mean of three source perturbed absolute-expression means",
+    "source_control_subtracted": false,
+    "target_control_added": false,
+    "source_cell_count_weighted": false,
+    "distribution": null,
+    "historical_mixture": "Not exported. The later requested mean-only Source-Mean definition excludes empirical source mixtures."
+  },
+  "statistics": "One estimate per fold; five-fold mean, sample variance and sample SD, ddof=1; no training seed variance",
+  "prediction_inputs": "Target-Control: target controls only. Source-Mean: same-target perturbations from three legal training contexts only."
+}

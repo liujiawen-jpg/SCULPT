@@ -1,0 +1,19 @@
+{
+  "full_runner_ported": false,
+  "purpose": "Origin fingerprints; private machine paths omitted",
+  "release_edits": "portable imports and explicit requested-device RNG/memory guards; controller/storage bookkeeping removed; native model, objective, sampling and clipping preserved",
+  "sources": [
+    {
+      "file": "poppert_model.py",
+      "sha256": "10105eefff0a8634263741b40d6c314e097431ecf9ad255fbd6c1ea4cfd2267c"
+    },
+    {
+      "file": "prepare_populations.py",
+      "sha256": "21928427c1d4fcdc3a2ef85970d187521e4cf9ec6d6c5b4f951e9d0e8a8b8d1d"
+    },
+    {
+      "file": "train_poppert.py",
+      "sha256": "4182d4db04040e765ad89f9d34db3fab56b3683f97e005f58fbaeb4f26c6942b"
+    }
+  ]
+}

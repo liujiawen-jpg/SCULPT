@@ -1,0 +1,147 @@
+{
+  "schema": "state_cross_context_registration_v1",
+  "method_id": "STATE-official-ST-native-cell-set",
+  "official_repository": "https://github.com/ArcInstitute/state",
+  "official_commit": "9bbfe78a434a55205e4de834e1ea99f85f7a3add",
+  "benchmark": {
+    "folds": [
+      "F1",
+      "F2",
+      "F3",
+      "F4",
+      "F5"
+    ],
+    "seeds": [
+      17,
+      29,
+      43
+    ],
+    "runs": 15,
+    "targets": 1525,
+    "genes": 5979,
+    "generated_cells": 512,
+    "training_response_conditions": 4116,
+    "training_control_groups": 3,
+    "total_condition_sets_per_epoch": 4119,
+    "training_cells_budget": "All immutable benchmark cells per legal condition (at most256), not all raw h5ad cells",
+    "expression_units": "anchor2048_log1p_per10000_v1",
+    "retrospective_test": true,
+    "SE_pretraining_used": false,
+    "same_split_as_SCULPT": true
+  },
+  "network": {
+    "implementation": "unchanged official StateTransitionPerturbationModel",
+    "model": "state",
+    "hidden_dim": 768,
+    "transformer_layers": 8,
+    "attention_heads": 12,
+    "cell_set_len": 512,
+    "input_output_genes": 5979,
+    "perturbation_onehot_dim": 1526,
+    "control_category_index": 1525,
+    "input_api": "X_hvg (fixed5979genes; no new HVG selection)",
+    "output_space": "gene",
+    "native_output": "512 complete native ReLU cell predictions; no extra distribution adapter or clipping",
+    "auxiliary_decoder": "Official CLI structure retained; unused for X_hvg/gene main output and loss",
+    "task_initialization": "Fresh for each fold/seed",
+    "old_prediction_or_task_weight_reuse": false
+  },
+  "optimization": {
+    "optimizer": "Official configure_optimizers: torch.optim.Adam",
+    "learning_rate": 0.0001,
+    "applied_weight_decay": 0,
+    "scheduler": null,
+    "batch_size": 16,
+    "gradient_clip_norm": 10.0,
+    "training_loss": "Official energy distribution loss, each512cell set acrossall5979genes",
+    "training_forward_precision": "bfloat16 mixed precision",
+    "loss_precision": "float32",
+    "evaluation_forward_precision": "float32 with TF32 matrix multiplication enabled",
+    "restart_checkpoint_every_steps": 250,
+    "epoch_definition": "Each of4116legalP+3trainingEconditions once, shuffled; independently resample512controland512Pcells uniformly with replacement",
+    "new_PDS_or_MSE_loss_added": false
+  },
+  "validation": {
+    "every_epochs": 2,
+    "response_conditions": 448,
+    "distribution_conditions": 80,
+    "external_weight": 0.5,
+    "internal_each_weight": 0.16666666666666666,
+    "selection_objective": "Fixed environment-weighted R_delta + CRPS_normalized +0.25 centered_joint_SW1_normalized",
+    "selector_is_benchmark_adaptation": true,
+    "same_selector_as": "scPILOT registered comparison",
+    "exact_ties": "earliest strict minimum",
+    "PDS_floor": null,
+    "query_labels_access": "Only after all predictions and checkpoint byte hashes are sealed"
+  },
+  "convergence": {
+    "min_epochs": 10,
+    "min_optimizer_steps": 1500,
+    "relative_min_delta": 0.002,
+    "patience_checks": 6,
+    "initial_max_epochs": 60,
+    "extended_max_epochs": 120,
+    "budget_unit": "condition epochs;258optimizersteps per epoch atbatch16",
+    "at_cap_without_plateau": "needs_decision, do not readtestlabels",
+    "native_upstream_budget_disclosure": "upstream YAML400000steps and README example40000; thisbenchmark uses registered plateau stopping rather than thosefixedbudgets"
+  },
+  "inference": {
+    "inputs": "Target environment E control cells and perturbation identity only",
+    "target_control_training": false,
+    "target_control_role": "Native ST biological input; no targetP input",
+    "same_target_source_P_inference_retrieval": false,
+    "prediction_mean": "Exact column mean of emitted512cellcloud",
+    "no_old_predictor_residual": true,
+    "native_predict_residual": "Internal residual on encoded real control within official transformer, not old predictor output"
+  },
+  "evaluation": {
+    "response": [
+      "PDS_cos",
+      "Pearson_delta",
+      "Spearman_macro",
+      "JAC20",
+      "JAC50",
+      "JAC100",
+      "SignedTop100",
+      "DEG_AP",
+      "direction_accuracy_nonzero_truth",
+      "RMS_amplitude_ratio_macro"
+    ],
+    "distribution": [
+      "marginal_W1_normalized",
+      "joint_SW1_normalized",
+      "centered_joint_SW1_normalized",
+      "PCA_covariance_relative_frobenius",
+      "MMD2",
+      "CRPS_normalized"
+    ],
+    "test_conditions": 1525,
+    "distribution_test_conditions": 1525,
+    "geometry": "Reuse byte-verified immutable training-E-only public comparison geometry",
+    "PDS": "Computeonceoverwholecandidatepanel; not minibatchaverages",
+    "MMD_sampling_key": "environment|target; identicalcommonmetriccode",
+    "test_selection": false
+  },
+  "statistics": {
+    "overall": "Mean3seedswithin each fold then equalmean5folds",
+    "between_fold_variance": "sample variance ddof1 of fivefoldmeans",
+    "seed_variance": "Report separately;seedsdonot changefolds"
+  },
+  "method_adaptations": [
+    "Fixed benchmark featureaxisandexpressionunits replace upstream HVGpreprocessing; do not normalize twice",
+    "Fixed benchmark conditionholdout and control-only testinputs",
+    "Data loader shuffleshomogeneousconditions per epoch andresamples512cells; officialsamecondition set semantics preserved",
+    "BF16trainingforward,FP32energyloss; unchanged officialnetwork/loss/Adam",
+    "Shared benchmark distribution-aware validationselectorandplateau stopping, not claimed as upstreamdefaults"
+  ],
+  "official_license": "CC-BY-NC-SA-4.0",
+  "runtime": {
+    "python": "3.11",
+    "torch": "2.7.1+cu128",
+    "transformers": "4.52.3",
+    "geomloss": "0.3.1",
+    "pytorch_lightning": "2.6.5",
+    "numpy": "2.4.4",
+    "upstream_source": "Use the pinned checkout, not an installed package with a matching name."
+  }
+}

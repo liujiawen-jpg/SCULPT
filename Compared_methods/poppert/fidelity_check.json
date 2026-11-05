@@ -1,0 +1,21 @@
+{
+  "status": "passed",
+  "function_AST_identity_against_registered_native_adapter": {
+    "configuration": true,
+    "seed_all": false,
+    "create_model": false,
+    "forward": true,
+    "loss": true,
+    "cloud": false
+  },
+  "sampling_forward_clipping_permutation_AST_identity": true,
+  "portability_exception": {
+    "seed_all": "Initialize host and requested GPU only, not every visible GPU",
+    "create_model": "Resolve explicit device and apply memory fraction to that exact GPU",
+    "cloud": "Fork CPU plus input-tensor GPU, seed those generators only, restore on success/error"
+  },
+  "source_sha256": "10105eefff0a8634263741b40d6c314e097431ecf9ad255fbd6c1ea4cfd2267c",
+  "release_sha256": "eebb76749c974fdf9cde6f0be1c46d5e85b35d862593338c8a920acae2ad9731",
+  "scope": "Native numerics preserved; device/RNG guards intentionally differ from historical single-visible-GPU wrapper",
+  "training_updates": 0
+}

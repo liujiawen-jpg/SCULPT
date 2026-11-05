@@ -1,0 +1,17 @@
+{
+  "status": "passed",
+  "checks": [
+    "registered_config",
+    "condition_axes",
+    "PCA_forward_inverse_no_extra_residual",
+    "finite_output",
+    "seed_reproducibility",
+    "official_network_CPU_initialization_no_training"
+  ],
+  "device": "CPU",
+  "training_updates": 0,
+  "benchmark_label_reads": 0,
+  "fresh_environment_install_tested": false,
+  "full_benchmark_retrained": false,
+  "runtime_note": "Existing environment logged missing optional cuDNN plugin while initializing; CPU checks completed with exit0. This does not certify the new CUDA installation recipe."
+}

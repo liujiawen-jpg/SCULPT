@@ -20,10 +20,15 @@ spec.loader.exec_module(converter)
 class ConfigurationTests(unittest.TestCase):
     def test_fixed_revisions_and_configuration_have_no_historical_paths(self):
         registry = json.loads((ROOT/"registry.json").read_text())
-        self.assertEqual(set(registry), {"txpert","cpa","pie","scpilot"})
+        self.assertEqual(set(registry), {"txpert","cpa","pie","scpilot","state","cellflow","poppert","source_mean","target_control"})
         for name,record in registry.items():
-            self.assertRegex(record["commit"],r"^[a-f0-9]{40}$")
-            text = (ROOT/name/"benchmark_config.json").read_text()
+            if record.get("kind") == "no_training_baseline":
+                self.assertEqual(record["replicates_per_fold"],1)
+                path = ROOT/record["configuration"]
+            else:
+                self.assertRegex(record["commit"],r"^[a-f0-9]{40}$")
+                path = ROOT/name/"benchmark_config.json"
+            text = path.read_text()
             for machine_path in ("/root/","/mnt/","/tmp/"):
                 self.assertNotIn(machine_path,text)
             json.loads(text)
@@ -82,6 +87,24 @@ class ConversionTests(unittest.TestCase):
         with h5py.File(output) as h:
             np.testing.assert_array_equal(h["support"][:],cloud)
             self.assertTrue((h["support"][:]<0).any())
+
+    def test_new_native_cloud_export(self):
+        for name in ("state", "cellflow", "poppert"):
+            with self.subTest(method=name):
+                cloud=np.random.default_rng(17).random((2,512,3)).astype("f4")
+                src=self.path/(name+".npz"); np.savez(src,support=cloud,mean=cloud.mean(1,dtype="f8"))
+                out=converter.convert(src,self.path/(name+".h5"),method=name,environment="test",
+                    genes=self.genes,targets=self.targets,checkpoint=self.checkpoint,fold="F1",seed=17,
+                    support_semantics="iid_samples")
+                with h5py.File(out) as h:
+                    np.testing.assert_array_equal(h["support"][:],cloud)
+                    self.assertTrue(h.attrs["sealed"])
+
+    def test_baseline_requires_its_exact_adapter(self):
+        src=self.path/"native.npz";np.savez(src,mean=np.ones((2,3),dtype="f4"))
+        for method in ("source_mean","target_control"):
+            with self.assertRaisesRegex(ValueError,"dedicated"):
+                self.convert(method,src)
 
     def test_mismatched_cloud_mean_refused(self):
         src = self.path/"native.npz"

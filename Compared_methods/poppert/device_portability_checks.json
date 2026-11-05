@@ -1,0 +1,19 @@
+{
+  "status": "passed",
+  "real_GPU_calls": 0,
+  "training_updates": 0,
+  "checks": [
+    "explicit_cuda2_memory_limit",
+    "cuda2_only_seed_and_fork",
+    "other_GPU_state_untouched",
+    "CPU_Python_NumPy_states_restored_after_cloud",
+    "repeat_cloud_identity",
+    "exception_restores_RNG",
+    "current_device_restored",
+    "legacy_cuda0_resolution",
+    "CPU_model_no_GPU_memory_operation"
+  ],
+  "native_CPU_recheck": "passed",
+  "native_CPU_loss_before_and_after": 1.0425785779953003,
+  "actual_multidevice_GPU_execution_tested": false
+}

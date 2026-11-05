@@ -1,0 +1,1402 @@
+{
+  "status": "passed",
+  "reference": "Frozen J0 joint-training implementation",
+  "scope": "CPU synthetic implementation parity; not a new biological benchmark",
+  "core_ast_equivalence": {
+    "model.py": true,
+    "shared_path_model.py": true,
+    "batched_model.py": true,
+    "connection.py": true,
+    "batched_connection.py": true,
+    "objective.py": true,
+    "ranking.py": true,
+    "rearrangement.py": true,
+    "condition_batching.py": true,
+    "common.py": true,
+    "training_support.py": true,
+    "pooled_reference.py": true
+  },
+  "scientific_protocol_equivalence": {
+    "model": true,
+    "local_rank": true,
+    "ambient_dimension": true,
+    "loss_weights": true,
+    "generated_cells_train": true,
+    "real_cells_train": true,
+    "generated_cells_eval": true,
+    "marginal_genes": true,
+    "joint_projections": true,
+    "phases": true,
+    "joint_training": true,
+    "joint_holdout": true,
+    "joint_validation": true,
+    "distribution_weight_warmup_epochs": true,
+    "distribution_weight_warmup_minimum": true,
+    "source_readout_weight": true,
+    "source_readout_detection_weight": true,
+    "weight_decay": true,
+    "warmup_updates": true,
+    "microbatch_per_environment": true,
+    "new_relation_candidates": true,
+    "rank_temperature": true,
+    "relation_norm_floor": true,
+    "covariance_prior_strength": true,
+    "validation_every_epochs": true,
+    "gradient_clip": true,
+    "seeds": true,
+    "folds": true
+  },
+  "stopping_class_equivalence": {
+    "PlateauController": true,
+    "JointPlateauController": true
+  },
+  "numeric_comparison_count": 192,
+  "maximum_absolute_difference": 0.0,
+  "numeric_checks": [
+    {
+      "name": "geometry/bases",
+      "shape": [
+        40,
+        8,
+        4
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "geometry/edge_src",
+      "shape": [
+        274
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "geometry/edge_dst",
+      "shape": [
+        274
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "geometry/left",
+      "shape": [
+        274,
+        4,
+        4
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "geometry/right",
+      "shape": [
+        274,
+        4,
+        4
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "geometry/weight",
+      "shape": [
+        274,
+        4
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "geometry/principal_cosines",
+      "shape": [
+        274,
+        4
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "geometry/stability",
+      "shape": [
+        40,
+        4
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "geometry/local_rank",
+      "shape": [
+        40
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "geometry/prior",
+      "shape": [
+        40,
+        261
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "geometry/ctrl_center",
+      "shape": [
+        7
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "geometry/ctrl_scale",
+      "shape": [
+        7
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "geometry/stat_scale",
+      "shape": [
+        40,
+        7
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "geometry/feature_center",
+      "shape": [
+        282
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "geometry/feature_scale",
+      "shape": [
+        282
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "geometry/feature_projection",
+      "shape": [
+        282,
+        8
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "forward/rule",
+      "shape": [
+        2,
+        40,
+        4
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "forward/p",
+      "shape": [
+        2,
+        40
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "forward/r",
+      "shape": [
+        2,
+        40
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "forward/mean",
+      "shape": [
+        2,
+        40
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "forward/mean512_st",
+      "shape": [
+        2,
+        40
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "forward/support",
+      "shape": [
+        2,
+        16,
+        40
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "forward/pre_reorder_support",
+      "shape": [
+        2,
+        16,
+        40
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "forward/positive_quantiles",
+      "shape": [
+        2,
+        40,
+        33
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "forward/unit_mean_shape",
+      "shape": [
+        2,
+        40,
+        33
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "forward/rank_penalty",
+      "shape": [
+        2
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "joint_objective",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "loss_terms/mean_mse",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "loss_terms/mean_correlation",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "loss_terms/strong_top100",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "loss_terms/detection",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "loss_terms/target_rule",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "loss_terms/positive_mean",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "loss_terms/source_fit",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "loss_terms/source_readout_mse",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "loss_terms/source_readout_detection",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "loss_terms/source_readout_total",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "loss_terms/marginal_W1",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "loss_terms/positive_shape",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "loss_terms/centered_joint_SW1",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "loss_terms/relative_PCA_covariance",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "loss_terms/rank_penalty",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "loss_terms/covariance_data_weight",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "loss_terms/joint_marginal",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "loss_terms/joint_structure",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "loss_terms/joint_delta",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "loss_terms/joint_discrimination",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "loss_terms/joint_shared",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/observation_base",
+      "shape": [
+        7,
+        8
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/prior_norm.weight",
+      "shape": [
+        261
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/prior_norm.bias",
+      "shape": [
+        261
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/background.0.weight",
+      "shape": [
+        64,
+        268
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/background.0.bias",
+      "shape": [
+        64
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/background.2.weight",
+      "shape": [
+        56,
+        64
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/background.2.bias",
+      "shape": [
+        56
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/prior_gene.weight",
+      "shape": [
+        8,
+        261
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/prior_target.weight",
+      "shape": [
+        8,
+        261
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/joint.0.weight",
+      "shape": [
+        625
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/joint.0.bias",
+      "shape": [
+        625
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/joint.1.weight",
+      "shape": [
+        16,
+        625
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/joint.1.bias",
+      "shape": [
+        16
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/joint.3.weight",
+      "shape": [
+        8,
+        16
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/joint.3.bias",
+      "shape": [
+        8
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/joint_key.weight",
+      "shape": [
+        8,
+        15
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/joint_key.bias",
+      "shape": [
+        8
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/joint_query.0.weight",
+      "shape": [
+        8,
+        268
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/joint_query.0.bias",
+      "shape": [
+        8
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/gene.0.weight",
+      "shape": [
+        552
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/gene.0.bias",
+      "shape": [
+        552
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/gene.1.weight",
+      "shape": [
+        16,
+        552
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/gene.1.bias",
+      "shape": [
+        16
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/gene.3.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/gene.3.bias",
+      "shape": [
+        16
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/decoder.weight",
+      "shape": [
+        2,
+        16
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/decoder.bias",
+      "shape": [
+        2
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/shape.joint.0.weight",
+      "shape": [
+        625
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/shape.joint.0.bias",
+      "shape": [
+        625
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/shape.joint.1.weight",
+      "shape": [
+        16,
+        625
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/shape.joint.1.bias",
+      "shape": [
+        16
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/shape.joint.3.weight",
+      "shape": [
+        8,
+        16
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/shape.joint.3.bias",
+      "shape": [
+        8
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/shape.network.0.weight",
+      "shape": [
+        46
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/shape.network.0.bias",
+      "shape": [
+        46
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/shape.network.1.weight",
+      "shape": [
+        16,
+        46
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/shape.network.1.bias",
+      "shape": [
+        16
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/shape.network.3.weight",
+      "shape": [
+        3,
+        16
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/shape.network.3.bias",
+      "shape": [
+        3
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/reorder.joint.0.weight",
+      "shape": [
+        625
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/reorder.joint.0.bias",
+      "shape": [
+        625
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/reorder.joint.1.weight",
+      "shape": [
+        16,
+        625
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/reorder.joint.1.bias",
+      "shape": [
+        16
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/reorder.joint.3.weight",
+      "shape": [
+        8,
+        16
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/reorder.joint.3.bias",
+      "shape": [
+        8
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/reorder.cell.0.weight",
+      "shape": [
+        309
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/reorder.cell.0.bias",
+      "shape": [
+        309
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/reorder.cell.1.weight",
+      "shape": [
+        16,
+        309
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/reorder.cell.1.bias",
+      "shape": [
+        16
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/reorder.cell.3.weight",
+      "shape": [
+        8,
+        16
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/reorder.cell.3.bias",
+      "shape": [
+        8
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/reorder.gene.0.weight",
+      "shape": [
+        46
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/reorder.gene.0.bias",
+      "shape": [
+        46
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/reorder.gene.1.weight",
+      "shape": [
+        16,
+        46
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/reorder.gene.1.bias",
+      "shape": [
+        16
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/reorder.gene.3.weight",
+      "shape": [
+        8,
+        16
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/reorder.gene.3.bias",
+      "shape": [
+        8
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "gradient/joint_to_prior.weight",
+      "shape": [
+        8,
+        8
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/loss",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/terms/mean_mse",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/terms/mean_correlation",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/terms/strong_top100",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/terms/detection",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/terms/target_rule",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/terms/positive_mean",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/terms/source_fit",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/terms/response_relation",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/terms/relation_diagonal",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/terms/relation_off_diagonal",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/terms/relation_paired_cosine",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/terms/relation_query_weight",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/terms/relation_candidate_weight_sum",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/terms/source_readout_mse",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/terms/source_readout_detection",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/terms/source_readout_total",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/terms/marginal_W1",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/terms/positive_shape",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/terms/centered_joint_SW1",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/terms/relative_PCA_covariance",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/terms/rank_penalty",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/terms/covariance_data_weight",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/terms/joint_marginal",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/terms/joint_structure",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/terms/joint_delta",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/terms/joint_discrimination",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/terms/joint_shared",
+      "shape": [],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/observation_base",
+      "shape": [
+        7,
+        8
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/prior_norm.weight",
+      "shape": [
+        261
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/prior_norm.bias",
+      "shape": [
+        261
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/background.0.weight",
+      "shape": [
+        64,
+        268
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/background.0.bias",
+      "shape": [
+        64
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/background.2.weight",
+      "shape": [
+        56,
+        64
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/background.2.bias",
+      "shape": [
+        56
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/prior_gene.weight",
+      "shape": [
+        8,
+        261
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/prior_target.weight",
+      "shape": [
+        8,
+        261
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/joint.0.weight",
+      "shape": [
+        625
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/joint.0.bias",
+      "shape": [
+        625
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/joint.1.weight",
+      "shape": [
+        16,
+        625
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/joint.1.bias",
+      "shape": [
+        16
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/joint.3.weight",
+      "shape": [
+        8,
+        16
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/joint.3.bias",
+      "shape": [
+        8
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/joint_key.weight",
+      "shape": [
+        8,
+        15
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/joint_key.bias",
+      "shape": [
+        8
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/joint_query.0.weight",
+      "shape": [
+        8,
+        268
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/joint_query.0.bias",
+      "shape": [
+        8
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/gene.0.weight",
+      "shape": [
+        552
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/gene.0.bias",
+      "shape": [
+        552
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/gene.1.weight",
+      "shape": [
+        16,
+        552
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/gene.1.bias",
+      "shape": [
+        16
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/gene.3.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/gene.3.bias",
+      "shape": [
+        16
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/decoder.weight",
+      "shape": [
+        2,
+        16
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/decoder.bias",
+      "shape": [
+        2
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/shape.joint.0.weight",
+      "shape": [
+        625
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/shape.joint.0.bias",
+      "shape": [
+        625
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/shape.joint.1.weight",
+      "shape": [
+        16,
+        625
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/shape.joint.1.bias",
+      "shape": [
+        16
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/shape.joint.3.weight",
+      "shape": [
+        8,
+        16
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/shape.joint.3.bias",
+      "shape": [
+        8
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/shape.network.0.weight",
+      "shape": [
+        46
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/shape.network.0.bias",
+      "shape": [
+        46
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/shape.network.1.weight",
+      "shape": [
+        16,
+        46
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/shape.network.1.bias",
+      "shape": [
+        16
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/shape.network.3.weight",
+      "shape": [
+        3,
+        16
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/shape.network.3.bias",
+      "shape": [
+        3
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/reorder.joint.0.weight",
+      "shape": [
+        625
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/reorder.joint.0.bias",
+      "shape": [
+        625
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/reorder.joint.1.weight",
+      "shape": [
+        16,
+        625
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/reorder.joint.1.bias",
+      "shape": [
+        16
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/reorder.joint.3.weight",
+      "shape": [
+        8,
+        16
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/reorder.joint.3.bias",
+      "shape": [
+        8
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/reorder.cell.0.weight",
+      "shape": [
+        309
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/reorder.cell.0.bias",
+      "shape": [
+        309
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/reorder.cell.1.weight",
+      "shape": [
+        16,
+        309
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/reorder.cell.1.bias",
+      "shape": [
+        16
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/reorder.cell.3.weight",
+      "shape": [
+        8,
+        16
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/reorder.cell.3.bias",
+      "shape": [
+        8
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/reorder.gene.0.weight",
+      "shape": [
+        46
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/reorder.gene.0.bias",
+      "shape": [
+        46
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/reorder.gene.1.weight",
+      "shape": [
+        16,
+        46
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/reorder.gene.1.bias",
+      "shape": [
+        16
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/reorder.gene.3.weight",
+      "shape": [
+        8,
+        16
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/reorder.gene.3.bias",
+      "shape": [
+        8
+      ],
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "name": "training_wrapper/gradient/joint_to_prior.weight",
+      "shape": [
+        8,
+        8
+      ],
+      "maximum_absolute_difference": 0.0
+    }
+  ],
+  "original_task_weights_loaded": false,
+  "real_expression_read": false,
+  "new_full_training_run": false,
+  "synthetic_forward_case": {
+    "conditions": 2,
+    "sources_per_condition": 2,
+    "genes": 40,
+    "cells": 16,
+    "width": 16,
+    "state_rank": 8
+  },
+  "portable_regression_tests": {
+    "file": "tests/test_core_equivalence.py",
+    "passed": 6,
+    "additional_independent_checks": [
+      "dense_normal_equation_solution_and_gradients",
+      "condition_isolation"
+    ]
+  },
+  "additional_integrity_guard": {
+    "purpose": "Bind evaluation to the original prepared-data manifest before any label access",
+    "file": "src/cosit/evaluation.py",
+    "changes_model_or_metric_formulas": false,
+    "regression_tests": "tests/test_asset_binding.py",
+    "rejected_cases": [
+      "same-axis replacement observations with a new valid manifest",
+      "missing data-manifest binding"
+    ]
+  }
+}

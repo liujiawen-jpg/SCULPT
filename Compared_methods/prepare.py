@@ -11,6 +11,8 @@ HERE = Path(__file__).resolve().parent
 
 def fetch(method: str, directory: Path) -> Path:
     record = json.loads((HERE / "registry.json").read_text())[method]
+    if record.get("kind") == "no_training_baseline":
+        raise ValueError("No upstream checkout is needed for the built-in baseline runners")
     directory = directory.resolve()
     if directory.exists():
         actual = subprocess.check_output(
@@ -29,13 +31,14 @@ def fetch(method: str, directory: Path) -> Path:
     subprocess.run(["git", "-C", str(directory), "fetch", "--depth", "1", "origin", record["commit"]], check=True)
     subprocess.run(["git", "-C", str(directory), "checkout", "--detach", "FETCH_HEAD"], check=True)
     if not (directory / record["license_file"]).is_file():
-        raise RuntimeError("Pinned official license was not found; inspect the checkout")
+        raise RuntimeError("Pinned upstream license or licensing notice was not found; inspect the checkout")
     return directory
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("method", choices=tuple(json.loads((HERE / "registry.json").read_text())))
+    parser.add_argument("method", choices=tuple(k for k,v in json.loads((HERE / "registry.json").read_text()).items()
+        if v.get("kind") != "no_training_baseline"))
     parser.add_argument("--directory", required=True, type=Path)
     args = parser.parse_args()
     print(fetch(args.method, args.directory))

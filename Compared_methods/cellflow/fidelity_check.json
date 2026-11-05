@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "function_AST_identity_against_registered_native_adapter": {
+    "configuration": true,
+    "make_solver": true,
+    "condition": true,
+    "predict": true
+  },
+  "source_sha256": "78a65ab80645232d7f278d3e9d5547c41a4c55b683ed70bf4bf216c5826f1815",
+  "release_sha256": "d22451e55d6f6bd7bb7d18e32bf1b316ccf6ec32c217e90fbd9140dce3eb4c47",
+  "scope": "numerical function identity only; path/loading/checkpoint/controller code is not represented as a complete port",
+  "training_updates": 0
+}

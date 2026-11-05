@@ -1,0 +1,23 @@
+{
+  "full_runner_ported": false,
+  "purpose": "Origin fingerprints; private machine paths omitted",
+  "release_edits": "portable imports; remove controller/storage bookkeeping; preserve native numerical functions",
+  "sources": [
+    {
+      "file": "native_model.py",
+      "sha256": "78a65ab80645232d7f278d3e9d5547c41a4c55b683ed70bf4bf216c5826f1815"
+    },
+    {
+      "file": "run_cellflow.py",
+      "sha256": "befdbc5d593ff976171e5a8c1d3e5f393e19e1ab6f7a34fe94cb3fe9b2efde34"
+    },
+    {
+      "file": "prepare_pca.py",
+      "sha256": "42aa6b4dfe7f1762d6cc02442eba100a18098023e506799b6a865ab198664a6a"
+    },
+    {
+      "file": "METHOD_SPEC.json",
+      "sha256": "eed4f69c61c0ec93e60be66de8873b0b5af7f493269a8ddcfba26a942d0636b5"
+    }
+  ]
+}

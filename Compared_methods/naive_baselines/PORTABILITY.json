@@ -1,0 +1,10 @@
+{
+  "schema": "parameter_free_portability_audit_v1",
+  "historical_implementation_sha256": "aba746d1d56db899780a0fb1db2a03aec902e21d9cdade54dc5899a12c6c6ca2",
+  "verification": "20 synthetic uneven-source-size cases; exact array equality",
+  "source_mean": "Same equal-context absolute-expression analytic mean as registered baseline; the later requested mean-only interface intentionally drops the separate historical source-mixture support.",
+  "target_control": "Unchanged analytic mean, deterministic 512 whole-cell rows, support mean and selected row indices",
+  "training_performed": false,
+  "real_response_labels_read": 0,
+  "J0_core_modified": false
+}

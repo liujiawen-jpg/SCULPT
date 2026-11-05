@@ -1,0 +1,37 @@
+{
+  "schema": "state_portability_audit_v1",
+  "upstream_commit": "9bbfe78a434a55205e4de834e1ea99f85f7a3add",
+  "network_or_loss_replacement": false,
+  "changes": [
+    "Portable explicit upstream checkout instead of a fixed server directory",
+    "Pinned revision and upstream SHA-256 verification before native import",
+    "Public condition sampling adapter over role-checked CellStore",
+    "Public one-update wrapper uses the same registered BF16-forward/FP32-loss/clipping policy"
+  ],
+  "unchanged_function_bodies": {
+    "make_batch": {
+      "scientific_AST_unchanged": true,
+      "AST_sha256": "6be4417a45a3d885780546c878f2f8aecfe694af95a1de0d3c54c69c96b977b2"
+    },
+    "forward_cells": {
+      "scientific_AST_unchanged": true,
+      "AST_sha256": "60074a8f39880b46e851d486a026ce6809f18d5caea21efe4dcea83dda4fc1fd"
+    },
+    "native_loss": {
+      "scientific_AST_unchanged": true,
+      "AST_sha256": "6a66bec165cb437f6a9024e656442047c785eb92c14fb505492955a3b288b23a"
+    },
+    "predict_cells": {
+      "scientific_AST_unchanged": true,
+      "AST_sha256": "5a0a57f7bd68a554a0c7ff0c2af067483ed4059208d5db861d1f1a258b24a90b"
+    }
+  },
+  "native_configuration_verified": {
+    "hidden_dim": 768,
+    "layers": 8,
+    "heads": 12,
+    "cell_set_len": 512,
+    "loss": "energy"
+  },
+  "verification_scope": "Source AST and pinned configuration/import; no task training or real-data inference performed"
+}

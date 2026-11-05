@@ -23,23 +23,21 @@ Download resources into a user-chosen folder, for example `data/external/`.
 The repository does not download multi-GB checkpoints automatically.
 
 ```bash
-mkdir -p data/external
-curl -L --fail -o data/external/model.safetensors \
-  https://huggingface.co/tahoebio/Tahoe-x1/resolve/main/1b-model/model.safetensors
-curl -L --fail -o data/external/vocab.json \
-  https://huggingface.co/tahoebio/Tahoe-x1/resolve/main/1b-model/vocab.json
-curl -L --fail -o data/external/GenePT_emebdding_v2.zip \
-  https://zenodo.org/records/10833191/files/GenePT_emebdding_v2.zip?download=1
+python scripts/download_resources.py --resources tahoe genept string --output data/external --dry-run
+python scripts/download_resources.py --resources tahoe genept string --output data/external
 unzip data/external/GenePT_emebdding_v2.zip -d data/external/
-curl -L --fail -o data/external/9606.protein.links.v12.0.txt.gz \
-  https://stringdb-downloads.org/download/protein.links.v12.0/9606.protein.links.v12.0.txt.gz
-curl -L --fail -o data/external/9606.protein.info.v12.0.txt.gz \
-  https://stringdb-downloads.org/download/protein.info.v12.0/9606.protein.info.v12.0.txt.gz
-curl -L --fail -o data/external/9606.protein.aliases.v12.0.txt.gz \
-  https://stringdb-downloads.org/download/protein.aliases.v12.0/9606.protein.aliases.v12.0.txt.gz
-curl -L --fail -o data/external/hgnc_complete_set.txt \
-  https://storage.googleapis.com/public-download-files/hgnc/tsv/tsv/hgnc_complete_set.txt
 ```
+
+HGNC must be an archived complete TSV, with its independently checked hash:
+
+```bash
+python scripts/download_resources.py --resources hgnc --output data/external \
+  --hgnc-url "$HGNC_ARCHIVE_URL" --hgnc-sha256 "$HGNC_ARCHIVE_SHA256"
+```
+
+Set these two variables to the chosen official archive URL and SHA256 before
+running. The original mapping hash is documented below. A current HGNC TSV
+can produce a new mapping, but must not be described as the historical one.
 
 Use a fixed Hugging Face revision and an HGNC archive for a new reproducible
 release. The exact original inputs had the following SHA-256 values. The script
@@ -140,3 +138,18 @@ prior_path = build_prior(
     out="data/priors",
 )
 ```
+
+## Automated acquisition
+
+```bash
+python scripts/download_resources.py --resources tahoe genept string --output data/external --dry-run
+python scripts/download_resources.py --resources tahoe genept string --output data/external
+```
+
+The default immutable Tahoe revision is `d218a580b9c2500ae9dfc8367a398545e6f017a8`.
+Downloads with registered expected hashes fail rather than silently substituting
+changed assets. For HGNC, supply both an official archived URL and its SHA256:
+`--resources hgnc --hgnc-url URL --hgnc-sha256 SHA256`. No latest-HGNC fallback
+is performed by the downloader. GenePT ZIP extraction and the prior builder
+retain the pickle hash verification described above. A successful download is
+not itself a successful benchmark reproduction; record actual mappings.

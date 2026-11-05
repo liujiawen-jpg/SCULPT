@@ -1,0 +1,19 @@
+{
+  "status": "passed",
+  "checks": [
+    "upstream_hashes",
+    "registered_config",
+    "population_sampling",
+    "small_native_CPU_forward",
+    "native_objective_finite",
+    "native_copula_cloud_shape",
+    "official_export_range",
+    "same_seed_cloud_identity"
+  ],
+  "device": "CPU",
+  "training_updates": 0,
+  "benchmark_label_reads": 0,
+  "fresh_environment_install_tested": false,
+  "full_benchmark_retrained": false,
+  "synthetic_native_loss": 1.0425785779953003
+}

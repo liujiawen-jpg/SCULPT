@@ -27,6 +27,8 @@ def convert(source, output, *, method, environment, genes, targets, checkpoint, 
     from cosit.prediction import seal_predictions
     registry = json.loads((Path(__file__).parent / "registry.json").read_text())
     config = registry[method]
+    if config.get("kind") == "no_training_baseline":
+        raise ValueError("Use the dedicated naive_baselines runner; controls have separate analytic-mean semantics")
     if fold not in {f"F{i}" for i in range(1,6)} or seed not in (17,29,43):
         raise ValueError("Formal benchmark requires F1..F5 and initialization seed17/29/43")
     genes, targets = list(genes), list(targets)
@@ -86,7 +88,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source", required=True, type=Path, help="Native .npz with mean and optional support")
     parser.add_argument("--output", required=True, type=Path)
-    parser.add_argument("--method", required=True, choices=("txpert","cpa","pie","scpilot"))
+    parser.add_argument("--method", required=True, choices=tuple(k for k,v in json.loads((Path(__file__).parent / "registry.json").read_text()).items()
+            if v.get("kind") != "no_training_baseline"))
     parser.add_argument("--environment", required=True)
     parser.add_argument("--fold", required=True, choices=tuple(f"F{i}" for i in range(1,6)))
     parser.add_argument("--seed", required=True, type=int, choices=(17,29,43))

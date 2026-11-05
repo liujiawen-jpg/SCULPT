@@ -1,0 +1,13 @@
+{
+  "repository": "https://github.com/ArcInstitute/state",
+  "commit": "9bbfe78a434a55205e4de834e1ea99f85f7a3add",
+  "model_class": "state.tx.models.state_transition.StateTransitionPerturbationModel",
+  "files_sha256": {
+    "src/state/_cli/_tx/_train.py": "59ad91c58daedfb8c268b6f5b6361c666d5728d4f772f59cc83f1dc73dee686d",
+    "src/state/configs/model/state.yaml": "aac8e39088d81e02b680311d64a8c62a34f3bdc932d51f9ae22375a5b8fd535c",
+    "src/state/configs/training/default.yaml": "a015f0f0ea516e0b1bf7e382e0b2cea2d6d2f11fde0e9798e8e1d5b364d64ce2",
+    "src/state/tx/models/base.py": "cfc68762c7e70d6e0da381adb9ca037795e835afa535ab602c6e327f13459ebd",
+    "src/state/tx/models/state_transition.py": "45828e6f5ec4da52d1980fd54881e095ad1e8aaece4689c303fe10a671a57b63",
+    "src/state/tx/models/utils.py": "30dc320813e326516d22fc47162d5ec571511a25345af3f0e0fc1cef94ffd715"
+  }
+}
