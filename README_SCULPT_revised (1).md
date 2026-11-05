@@ -9,7 +9,7 @@ re-expresses it relative to the target control background.
 ```{=html}
 <!-- TODO: Replace this path with the final overview/method figure. -->
 ```
-![SCULPT overview](fig/SCULPT_overview.png)
+![SCULPT overview](fig/SCULPT_overview.pdf)
 
 ## How to run this code
 
@@ -82,7 +82,7 @@ used as a fixed additive prediction anchor.
 ```{=html}
 <!-- TODO: Replace this path with the final benchmark/results figure, if desired. -->
 ```
-![Benchmark results](fig/benchmark_results.png)
+![Benchmark results](fig/benchmark_results.pdf)
 
 ## 1. Environment installation
 
@@ -402,7 +402,7 @@ Additional implementation and protocol documentation:
 ```{=html}
 <!-- TODO: Replace this path with the final interpretability figure (e.g., the subspace-overlap and directional-coupling analyses). -->
 ```
-![Interpretability analysis](fig/interpretability_analysis.png)
+![Interpretability analysis](fig/interpretability_analysis.pdf)
 
 The interpretability analyses examine principal-subspace overlap on
 STRING edges versus non-edges, the fraction of active directional
